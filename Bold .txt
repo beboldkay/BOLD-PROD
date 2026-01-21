@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOLD | The Cheeky Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-pink': '#ff00ff',
+                        'neon-green': '#39ff14',
+                        'void-black': '#050505',
+                        'panel-gray': '#111111',
+                    },
+                    fontFamily: {
+                        'sans': ['Heebo', 'sans-serif'],
+                        'eng': ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 20s linear infinite',
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+            cursor: crosshair; /* סמן מטרה */
+        }
+
+        /* ניאון וגליצ'ים */
+        .text-glow-pink { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
+        .text-glow-green { text-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14; }
+        
+        .box-glow-green:hover { box-shadow: 0 0 15px #39ff14, inset 0 0 10px #39ff14; border-color: #39ff14; }
+        .box-glow-pink:hover { box-shadow: 0 0 15px #ff00ff, inset 0 0 10px #ff00ff; border-color: #ff00ff; }
+
+        /* אפקט גליצ' על טקסט */
+        .glitch-wrapper { position: relative; display: inline-block; }
+        .glitch-wrapper::before, .glitch-wrapper::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+        }
+        .glitch-wrapper::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch-wrapper::after {
+            left: -2px;
+            text-shadow: -1px 0 #39ff14;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(11px, 9999px, 81px, 0); }
+            20% { clip: rect(86px, 9999px, 13px, 0); }
+            40% { clip: rect(24px, 9999px, 91px, 0); }
+            60% { clip: rect(6px, 9999px, 63px, 0); }
+            80% { clip: rect(44px, 9999px, 49px, 0); }
+            100% { clip: rect(16px, 9999px, 68px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(65px, 9999px, 100px, 0); }
+            20% { clip: rect(2px, 9999px, 55px, 0); }
+            40% { clip: rect(88px, 9999px, 15px, 0); }
+            60% { clip: rect(25px, 9999px, 77px, 0); }
+            80% { clip: rect(59px, 9999px, 32px, 0); }
+            100% { clip: rect(93px, 9999px, 4px, 0); }
+        }
+
+        /* Scanlines */
+        .scanlines {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* עיצוב שדות טופס */
+        .terminal-input {
+            background: transparent;
+            border: 1px solid #333;
+            color: #39ff14;
+            font-family: 'Space Grotesk', monospace;
+            transition: all 0.3s;
+        }
+        .terminal-input:focus {
+            border-color: #ff00ff;
+            outline: none;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+        .terminal-input::placeholder { color: #555; }
+    </style>
+</head>
+<body class="font-sans">
+
+    <div class="scanlines"></div>
+
+    <!-- Ticker Top -->
+    <div class="fixed top-0 w-full bg-neon-green text-black font-eng font-bold text-xs py-1 z-50 overflow-hidden border-b border-white">
+        <div class="whitespace-nowrap animate-marquee">
+            /// SYSTEM STATUS: ONLINE /// TARGET ACQUIRED 🎯 /// BOLD PRODUCTIONS /// NO BULLSHIT /// JUST IMPACT /// EMPLOYER BRANDING /// GUERRILLA MARKETING /// EVENTS /// 
+            /// SYSTEM STATUS: ONLINE /// TARGET ACQUIRED 🎯 /// BOLD PRODUCTIONS /// NO BULLSHIT /// JUST IMPACT /// EMPLOYER BRANDING /// GUERRILLA MARKETING /// EVENTS /// 
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-8 w-full z-40 px-8 py-6 flex justify-between items-center bg-gradient-to-b from-void-black to-transparent">
+        <div class="text-4xl font-black italic tracking-tighter glitch-wrapper" data-text="BOLD">BOLD</div>
+        <div class="hidden md:flex gap-6 font-eng font-bold text-sm tracking-widest">
+            <a href="#manifesto" class="hover:text-neon-pink transition-colors">WHO_ARE_WE?</a>
+            <a href="#sectors" class="hover:text-neon-pink transition-colors">SECTORS</a>
+            <a href="#brief" class="border border-neon-green px-4 py-2 hover:bg-neon-green hover:text-black transition-all">START_PROJECT_🌶️</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col justify-center items-center relative px-4 text-center">
+        <!-- Background Elements -->
+        <div class="absolute top-1/4 left-10 text-neon-pink opacity-20 text-9xl animate-pulse">Target_Locked</div>
+        <div class="absolute bottom-10 right-10 text-neon-green font-mono text-xs">
+            Coordinates: 32.0853° N, 34.7818° E <br>
+            TLV_BASE
+        </div>
+
+        <h1 class="text-7xl md:text-9xl font-black leading-none mb-6 relative z-10">
+            IDEAS YOU CAN <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-pink filter drop-shadow-[0_0_10px_rgba(57,255,20,0.8)]">STEP INTO.</span>
+        </h1>
+        
+        <p class="text-xl md:text-3xl text-gray-300 font-light max-w-3xl mt-8">
+            הפרטנר החצוף שלך בשטח. <span class="text-neon-pink">🌶️</span> <br>
+            אנחנו הגשר בין החלומות של ה-Marketing לבין המציאות ברחוב.
+        </p>
+
+        <div class="mt-12 flex flex-col md:flex-row gap-6">
+            <a href="#sectors" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black transition-all shadow-[0_0_15px_rgba(255,0,255,0.4)]">
+                VIEW_THE_DAMAGE 🎯
+            </a>
+        </div>
+    </header>
+
+    <!-- The Vibe / Why Us -->
+    <section id="manifesto" class="py-24 px-6 md:px-20 bg-panel-gray relative overflow-hidden">
+        <div class="absolute -right-20 top-20 text-[200px] opacity-5 font-black text-white">BOLD</div>
+        
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+            <div>
+                <h2 class="text-neon-green font-eng text-sm tracking-[0.2em] mb-4">// SYSTEM_OVERRIDE</h2>
+                <h3 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+                    לא סוכנות. <br>
+                    לא חברת הפקה.<br>
+                    <span class="text-neon-pink">אנחנו BOLD.</span>
+                </h3>
+                <p class="text-gray-400 text-lg mb-6">
+                    אנחנו ה-Extension החצוף של המותג שלכם. אלו שיודעים לקחת בריף של "מיתוג מעסיק" ולהפוך אותו לריטריט שכולם מדברים עליו, או לקחת השקה של רכב ולהוריד אותה לכביש בלי ברקסים.
+                </p>
+                <ul class="space-y-4 font-mono text-sm text-white">
+                    <li class="flex items-center gap-3">
+                        <span class="text-neon-green">>></span> שקיפות מלאה (Transparent Production)
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-neon-green">>></span> קריאייטיב שאשכרה קורה (Execution First)
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="text-neon-green">>></span> אימפקט מדיד (KPIs or Die)
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Graphic Element -->
+            <div class="border border-neon-pink p-8 relative rotate-2 hover:rotate-0 transition-transform duration-500 bg-black">
+                <div class="absolute -top-3 -left-3 w-6 h-6 bg-neon-green"></div>
+                <div class="absolute -bottom-3 -right-3 w-6 h-6 bg-neon-green"></div>
+                <div class="font-eng text-6xl font-black text-white mb-4">BOLD</div>
+                <div class="text-neon-pink font-mono mb-8">
+                    > STATUS: HUNGRY<br>
+                    > VIBE: ELECTRIC<br>
+                    > OUTPUT: MEASURABLE
+                </div>
+                <div class="w-full h-1 bg-gradient-to-r from-neon-pink to-neon-green"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sectors -->
+    <section id="sectors" class="py-24 px-6 md:px-12 bg-void-black">
+        <h2 class="text-center font-eng text-5xl md:text-7xl font-bold mb-16 text-white glitch-wrapper" data-text="OUR_PLAYGROUND">OUR_PLAYGROUND</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            
+            <!-- Card 1: High Tech -->
+            <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-green group cursor-crosshair">
+                <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">👾</div>
+                <h3 class="font-eng text-2xl font-bold text-white mb-2">HIGH TECH & HR</h3>
+                <p class="text-gray-400 text-sm mb-6">
+                    מיתוג מעסיק שלא נראה כמו יום גיבוש של ההסתדרות. האקתונים, ריטריטים, מסיבות חברה וחוויות On-boarding שגורמות לעובדים לצלם ולשתף.
+                </p>
+                <div class="font-mono text-xs text-neon-green">
+                    [PROJECTS: GLOBAL_CYBER / FINTECH_UNICORNS]
+                </div>
+            </div>
+
+            <!-- Card 2: Real Estate -->
+            <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-pink group cursor-crosshair">
+                <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🏗️</div>
+                <h3 class="font-eng text-2xl font-bold text-white mb-2">REAL ESTATE</h3>
+                <p class="text-gray-400 text-sm mb-6">
+                    שיווק חווייתי לשכונות ומגדלים. במקום שלטים משעממים, אנחנו מייצרים גרילה חכמה, אמנות רחוב, ומרכזי מכירות שהם חוויה תרבותית.
+                </p>
+                <div class="font-mono text-xs text-neon-pink">
+                    [PROJECTS: TLV_TOWERS / LUXURY_LIVING]
+                </div>
+            </div>
+
+            <!-- Card 3: Lifestyle & Retail -->
+            <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-green group cursor-crosshair">
+                <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🛍️</div>
+                <h3 class="font-eng text-2xl font-bold text-white mb-2">LIFESTYLE & RETAIL</h3>
+                <p class="text-gray-400 text-sm mb-6">
+                    פופ-אפים שמוכרים, השקות נוצצות ודוכנים שעוצרים את הקניון. אנחנו מחברים בין העולם הפיזי לדיגיטלי (Phygital) כדי לייצר לידים.
+                </p>
+                <div class="font-mono text-xs text-neon-green">
+                    [PROJECTS: FASHION_WEEK / AUTO_LAUNCH]
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Brief Terminal -->
+    <section id="brief" class="py-24 px-4 bg-void-black border-t-2 border-neon-pink relative">
+        <!-- Floating emojis background -->
+        <div class="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+            <div class="absolute top-10 left-10 text-6xl animate-bounce">🌶️</div>
+            <div class="absolute bottom-20 right-20 text-6xl animate-pulse">🎯</div>
+            <div class="absolute top-1/2 left-1/2 text-6xl animate-spin-slow">💿</div>
+        </div>
+
+        <div class="max-w-3xl mx-auto relative z-10 border-2 border-neon-green bg-black p-2 shadow-[0_0_30px_rgba(57,255,20,0.2)]">
+            <!-- Terminal Header -->
+            <div class="bg-neon-green text-black font-mono text-xs p-2 flex justify-between items-center mb-6">
+                <span>BOLD_TERMINAL.EXE</span>
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-black"></div>
+                    <div class="w-3 h-3 rounded-full bg-black"></div>
+                </div>
+            </div>
+
+            <div class="p-4 md:p-8">
+                <h2 class="text-4xl font-bold mb-2 text-white">DROP A BRIEF <span class="text-neon-pink">🌶️</span></h2>
+                <p class="text-gray-400 font-mono text-sm mb-8">
+                    // מלאו את השדות. אנחנו נחזור עם פיצוח חצוף. <br>
+                    // אנחנו עובדים עם תקציבים שמייצרים אימפקט.
+                </p>
+
+                <form class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-neon-green text-xs font-mono mb-2">>> CLIENT_NAME</label>
+                            <input type="text" class="terminal-input w-full p-3 text-lg" placeholder="שם החברה / מותג">
+                        </div>
+                        <div>
+                            <label class="block text-neon-green text-xs font-mono mb-2">>> CONTACT_EMAIL</label>
+                            <input type="email" class="terminal-input w-full p-3 text-lg" placeholder="email@company.com">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-neon-pink text-xs font-mono mb-2">>> SECTOR</label>
+                            <select class="terminal-input w-full p-3 text-lg bg-black cursor-pointer">
+                                <option>High Tech / HR</option>
+                                <option>Real Estate</option>
+                                <option>Retail / Consumer</option>
+                                <option>Other Cool Shit</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-neon-pink text-xs font-mono mb-2">>> BUDGET_SCOPE</label>
+                            <input type="text" class="terminal-input w-full p-3 text-lg" placeholder="תקציב משוער">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-neon-green text-xs font-mono mb-2">>> THE_OBJECTIVE</label>
+                        <textarea rows="4" class="terminal-input w-full p-3 text-lg" placeholder="מה המטרה? (השקה, לידים, מודעות, פינוק לעובדים...)"></textarea>
+                    </div>
+
+                    <button type="button" class="w-full bg-neon-pink text-black font-eng font-bold text-xl py-4 hover:bg-white hover:text-neon-pink transition-all shadow-[0_0_20px_rgba(255,0,255,0.5)] mt-4 uppercase">
+                        EXECUTE_BRIEF_🚀
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-gray-900 py-12 text-center">
+        <div class="text-4xl font-black italic text-gray-800 mb-4 hover:text-white transition-colors cursor-default">BOLD.</div>
+        <p class="text-gray-500 font-mono text-xs mb-8">
+            TLV BASED. GLOBAL MINDSET. <br>
+            © 2026 BOLD PRODUCTIONS. ALL RIGHTS RESERVED.
+        </p>
+        <div class="flex justify-center gap-6 font-eng text-sm text-neon-green">
+            <a href="#" class="hover:underline">LINKEDIN</a>
+            <a href="#" class="hover:underline">INSTAGRAM</a>
+            <a href="#" class="hover:underline">TIKTOK</a>
+        </div>
+    </footer>
+
+</body>
+</html>
+
