@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BOLD | Experiential & Guerrilla Marketing</title>
+  <meta name="description" content="BOLD turns briefs into street-proof brand experiences — built fast, executed on-site, and measured hard." />
+
+  <!--
+    ✅ HOW TO USE (2 min):
+    1) Put this file as index.html
+    2) Put your logo at: assets/logos/bold-logo.png
+    3) Replace FORM_ACTION and SITE_URL below.
+    4) Upload to GitHub Pages / Replit / any static host.
+
+    IMPORTANT:
+    - Formspree requires your email verified + form activated.
+    - Set SITE_URL to your real site URL for redirects.
+  -->
+
+  <!-- EDIT THESE -->
+  <script>
+    // Replace with your Formspree endpoint:
+    window.BOLD_FORM_ACTION = "https://formspree.io/f/xvzzeprq";
+    // Replace with your real deployed URL (Replit / GitHub Pages / custom domain)
+    window.BOLD_SITE_URL = "https://YOUR-DOMAIN";
+  </script>
+
+  <link rel="icon" type="image/png" href="assets/logos/bold-logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'neon-pink': '#ff00ff',
+            'neon-green': '#39ff14',
+            'neon-red': '#ff3333',
+            'neon-cyan': '#00ffff',
+            'void-black': '#050505',
+            'panel-gray': '#111111',
+          },
+          fontFamily: {
+            'sans': ['Heebo', 'sans-serif'],
+            'eng': ['Space Grotesk', 'sans-serif'],
+          },
+          animation: {
+            'marquee': 'marquee 18s linear infinite',
+          },
+          keyframes: {
+            marquee: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: #050505;
+      color: #ffffff;
+      overflow-x: hidden;
+      cursor: none; /* HUD cursor */
+    }
+
+    /* Prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+      body { cursor: auto; }
+      #hud-canvas { display: none; }
+      .scanlines { display: none; }
+    }
+
+    .box-glow-green:hover { box-shadow: 0 0 18px #39ff14, inset 0 0 12px #39ff14; border-color: #39ff14; }
+    .box-glow-pink:hover { box-shadow: 0 0 18px #ff00ff, inset 0 0 12px #ff00ff; border-color: #ff00ff; }
+    .box-glow-red:hover { box-shadow: 0 0 18px #ff3333, inset 0 0 12px #ff3333; border-color: #ff3333; }
+
+    /* HUD Canvas */
+    #hud-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Glitch wrapper */
+    .glitch-wrapper { position: relative; display: inline-block; }
+    .glitch-wrapper::before, .glitch-wrapper::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #050505;
+    }
+    .glitch-wrapper::before {
+      left: 2px;
+      text-shadow: -1px 0 #ff00ff;
+      clip: rect(24px, 550px, 90px, 0);
+      animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+    .glitch-wrapper::after {
+      left: -2px;
+      text-shadow: -1px 0 #39ff14;
+      clip: rect(85px, 550px, 140px, 0);
+      animation: glitch-anim 2.5s infinite linear alternate-reverse;
+    }
+    @keyframes glitch-anim {
+      0% { clip: rect(11px, 9999px, 81px, 0); }
+      20% { clip: rect(86px, 9999px, 13px, 0); }
+      40% { clip: rect(24px, 9999px, 91px, 0); }
+      60% { clip: rect(6px, 9999px, 63px, 0); }
+      80% { clip: rect(44px, 9999px, 49px, 0); }
+      100% { clip: rect(16px, 9999px, 68px, 0); }
+    }
+    @keyframes glitch-anim-2 {
+      0% { clip: rect(65px, 9999px, 100px, 0); }
+      20% { clip: rect(2px, 9999px, 55px, 0); }
+      40% { clip: rect(88px, 9999px, 15px, 0); }
+      60% { clip: rect(25px, 9999px, 77px, 0); }
+      80% { clip: rect(59px, 9999px, 32px, 0); }
+      100% { clip: rect(93px, 9999px, 4px, 0); }
+    }
+
+    /* Hero word swap glitch */
+    .glitch-swap-active {
+      animation: glitch-swap 0.28s steps(2, end) both;
+      color: #39ff14 !important;
+      text-shadow: 4px 0 #ff00ff, -4px 0 #ff3333;
+    }
+    @keyframes glitch-swap {
+      0% { transform: translate(0,0); opacity: 1; clip-path: inset(0 0 0 0); }
+      20% { transform: translate(-10px, 5px); opacity: 0.85; clip-path: inset(10% 0 80% 0); }
+      40% { transform: translate(10px, -5px); opacity: 1; clip-path: inset(40% 0 10% 0); }
+      60% { transform: translate(-5px, 0); opacity: 0.55; clip-path: inset(80% 0 5% 0); }
+      80% { transform: translate(5px, 5px); opacity: 1; clip-path: inset(0 0 0 0); }
+      100% { transform: translate(0,0); opacity: 1; }
+    }
+
+    /* Scanlines */
+    .scanlines {
+      background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+      background-size: 100% 4px;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    /* Terminal inputs */
+    .terminal-input {
+      background: transparent;
+      border: 1px solid #333;
+      color: #39ff14;
+      font-family: 'Space Grotesk', monospace;
+      transition: all 0.25s;
+      cursor: none;
+    }
+    .terminal-input:focus {
+      border-color: #ff00ff;
+      outline: none;
+      box-shadow: 0 0 10px #ff00ff;
+    }
+    .terminal-input::placeholder { color: #555; }
+
+    /* Mobile cursor: show normal cursor on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      body, .terminal-input, a, button, select, textarea { cursor: auto !important; }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid rgba(57,255,20,0.6);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-family: 'Space Grotesk', system-ui;
+      font-size: 13px;
+      z-index: 99999;
+      backdrop-filter: blur(8px);
+      display: none;
+    }
+    .toast.show { display: block; }
+  </style>
+</head>
+
+<body class="font-sans">
+  <!-- HUD Canvas -->
+  <canvas id="hud-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Ticker -->
+  <div class="fixed top-0 w-full bg-neon-green text-black font-eng font-bold text-xs py-1 z-50 overflow-hidden border-b border-white">
+    <div class="whitespace-nowrap animate-marquee">
+      /// SYSTEM STATUS: ONLINE /// TARGET ACQUIRED 🎯 /// BOLD PRODUCTIONS /// NO BULLSHIT /// JUST IMPACT /// EXPERIENCES /// GUERRILLA /// EVENTS ///
+      /// SYSTEM STATUS: ONLINE /// TARGET ACQUIRED 🎯 /// BOLD PRODUCTIONS /// NO BULLSHIT /// JUST IMPACT /// EXPERIENCES /// GUERRILLA /// EVENTS ///
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="fixed top-8 w-full z-40 px-6 md:px-8 py-5 flex justify-between items-center bg-gradient-to-b from-void-black to-transparent">
+    <a href="#top" class="flex items-center gap-3">
+      <img src="assets/logos/bold-logo.png" alt="BOLD" class="h-10 md:h-12 w-auto select-none" onerror="this.style.display='none'" />
+      <span class="text-3xl md:text-4xl font-black italic tracking-tighter glitch-wrapper font-eng" data-text="BOLD">BOLD</span>
+    </a>
+
+    <div class="hidden md:flex gap-6 font-eng font-bold text-sm tracking-widest">
+      <a href="#manifesto" class="hover:text-neon-pink transition-colors">WHO_ARE_WE?</a>
+      <a href="#sectors" class="hover:text-neon-pink transition-colors">SECTORS</a>
+      <a href="#proof" class="hover:text-neon-pink transition-colors">PROOF</a>
+      <a href="#brief" class="border border-neon-green px-4 py-2 hover:bg-neon-green hover:text-black transition-all">DROP_A_BRIEF_🌶️</a>
+    </div>
+
+    <!-- Mobile CTA -->
+    <a href="#brief" class="md:hidden border border-neon-green px-4 py-2 font-eng font-bold text-xs hover:bg-neon-green hover:text-black transition-all">
+      DROP 🌶️
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <header id="top" class="min-h-screen flex flex-col justify-center items-center relative px-4 text-center">
+    <div class="absolute top-1/4 left-6 md:left-10 text-neon-pink opacity-20 text-6xl md:text-9xl font-black select-none font-eng animate-pulse">
+      Target_Locked
+    </div>
+
+    <div class="absolute bottom-10 right-6 md:right-10 text-neon-green font-mono text-[10px] md:text-xs select-none text-right">
+      COORDS: <span id="coords-display">32.0853° N, 34.7818° E</span><br />
+      TLV_BASE // SECURE
+    </div>
+
+    <h1 class="text-6xl md:text-9xl font-black leading-none mb-4 relative z-10 font-eng">
+      IDEAS YOU CAN<br />
+      <span id="dynamic-text" class="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-pink filter drop-shadow-[0_0_10px_rgba(57,255,20,0.8)] transition-all duration-100 inline-block mt-2">STEP INTO.</span>
+    </h1>
+
+    <p class="text-lg md:text-2xl text-gray-300 font-light max-w-3xl mt-6">
+      Street-proof brand experiences. Built fast. Measured hard.
+      <br class="hidden md:block" />
+      No decks. No fluff. Just on-site execution.
+    </p>
+
+    <div class="mt-10 flex flex-col md:flex-row gap-5 justify-center">
+      <a href="#sectors" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black transition-all shadow-[0_0_15px_rgba(255,0,255,0.4)]">
+        LET’S GET BOLD
+      </a>
+
+      <a href="#brief" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.35)]">
+        DROP A BRIEF 🌶️
+      </a>
+    </div>
+
+    <p class="mt-6 text-xs text-gray-500 font-mono">
+      Reply time: 24–48h. If it’s urgent, write “URGENT”.
+    </p>
+  </header>
+
+  <!-- Proof strip -->
+  <section id="proof" class="py-10 bg-black border-t border-gray-900">
+    <div class="max-w-6xl mx-auto text-center px-6">
+      <p class="text-xs tracking-widest text-gray-500 mb-6 font-eng">THIS HOME PAGE WILL GROW WITH CASES + CLIENT LOGOS.</p>
+      <div class="flex justify-center items-center gap-8 opacity-80 flex-wrap">
+        <img src="assets/logos/bold-logo.png" class="h-8 md:h-10" alt="BOLD logo" onerror="this.style.display='none'" />
+        <span class="text-gray-600 font-mono text-xs">// Add client logos in assets/logos/ and drop them here</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <section id="manifesto" class="py-20 px-6 md:px-20 bg-panel-gray relative overflow-hidden">
+    <div class="absolute -right-20 top-20 text-[160px] md:text-[200px] opacity-5 font-black text-white select-none font-eng">BOLD</div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+      <div>
+        <h2 class="text-neon-green font-eng text-sm tracking-[0.2em] mb-4">// SYSTEM_OVERRIDE</h2>
+        <h3 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
+          Not an agency.<br />
+          Not “event suppliers”.<br />
+          <span class="text-neon-pink">We build the scene.</span>
+        </h3>
+        <p class="text-gray-400 text-lg mb-6">
+          BOLD bridges the gap between a brave concept and real execution — street-proof, fabrication-ready, and measurable.
+        </p>
+        <ul class="space-y-4 font-mono text-sm text-white">
+          <li class="flex items-center gap-3"><span class="text-neon-green">>></span> Transparent production</li>
+          <li class="flex items-center gap-3"><span class="text-neon-green">>></span> Execution-first creative</li>
+          <li class="flex items-center gap-3"><span class="text-neon-green">>></span> KPIs or it didn’t happen</li>
+        </ul>
+      </div>
+
+      <div class="border border-neon-pink p-8 relative rotate-2 hover:rotate-0 transition-transform duration-500 bg-black box-glow-pink">
+        <div class="absolute -top-3 -left-3 w-6 h-6 bg-neon-green"></div>
+        <div class="absolute -bottom-3 -right-3 w-6 h-6 bg-neon-green"></div>
+        <div class="font-eng text-6xl font-black text-white mb-4">BOLD</div>
+        <div class="text-neon-pink font-mono mb-8">
+          > STATUS: HUNGRY<br />
+          > VIBE: ELECTRIC<br />
+          > OUTPUT: MEASURABLE
+        </div>
+        <div class="w-full h-1 bg-gradient-to-r from-neon-pink to-neon-green"></div>
+
+        <div class="mt-6 grid grid-cols-1 gap-3 text-xs font-mono text-gray-300">
+          <div class="border border-gray-800 p-3">DELIVERABLES: activations / pop-ups / launches / internal events</div>
+          <div class="border border-gray-800 p-3">MECHANICS: QR scans / UGC / footfall / lead capture</div>
+          <div class="border border-gray-800 p-3">OUTPUT: content + real-world impact, same day</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sectors -->
+  <section id="sectors" class="py-20 px-6 md:px-12 bg-void-black">
+    <h2 class="text-center font-eng text-5xl md:text-7xl font-bold mb-14 text-white glitch-wrapper" data-text="OUR_PLAYGROUND">OUR_PLAYGROUND</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-green group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-green rounded-full animate-pulse"></div></div>
+        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">👾</div>
+        <h3 class="font-eng text-2xl font-bold text-white mb-2">HIGH TECH & HR</h3>
+        <p class="text-gray-400 text-sm mb-6">Employer branding that doesn’t feel like a corporate fun day. Retreats, onboarding, internal launches, and content moments.</p>
+        <div class="font-mono text-xs text-neon-green">[FORMAT: RETREATS / HACKATHONS]</div>
+      </div>
+
+      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-pink group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-pink rounded-full animate-pulse"></div></div>
+        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🏗️</div>
+        <h3 class="font-eng text-2xl font-bold text-white mb-2">REAL ESTATE</h3>
+        <p class="text-gray-400 text-sm mb-6">Experiential marketing for neighborhoods and towers — smarter than billboards. Street activations, art drops, and sales centers that feel cultural.</p>
+        <div class="font-mono text-xs text-neon-pink">[FORMAT: STREET DROPS / POP-UPS]</div>
+      </div>
+
+      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-red group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-red rounded-full animate-pulse"></div></div>
+        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🛍️</div>
+        <h3 class="font-eng text-2xl font-bold text-white mb-2">LIFESTYLE & RETAIL</h3>
+        <p class="text-gray-400 text-sm mb-6">Pop-ups that convert. Launches that look good and sell. Physical-to-digital mechanics that generate leads and UGC.</p>
+        <div class="font-mono text-xs text-neon-red">[FORMAT: LAUNCHES / UGC MACHINES]</div>
+      </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto mt-12 text-center">
+      <a href="#brief" class="inline-block font-eng font-bold text-base px-6 py-3 border border-neon-green text-neon-green hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.25)]">
+        READY? DROP A BRIEF 🌶️
+      </a>
+    </div>
+  </section>
+
+  <!-- Brief Terminal -->
+  <section id="brief" class="py-20 px-4 bg-void-black border-t-2 border-neon-pink relative">
+    <div class="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 text-6xl animate-bounce">🌶️</div>
+      <div class="absolute bottom-20 right-20 text-6xl animate-pulse">🎯</div>
+      <div class="absolute top-1/2 left-1/2 text-6xl">💿</div>
+    </div>
+
+    <div class="max-w-3xl mx-auto relative z-10 border-2 border-neon-green bg-black p-2 shadow-[0_0_30px_rgba(57,255,20,0.2)]">
+      <div class="bg-neon-green text-black font-mono text-xs p-2 flex justify-between items-center mb-6">
+        <span>BOLD_TERMINAL.EXE</span>
+        <div class="flex gap-2"><div class="w-3 h-3 rounded-full bg-black"></div><div class="w-3 h-3 rounded-full bg-black"></div></div>
+      </div>
+
+      <div class="p-4 md:p-8">
+        <h2 class="text-4xl font-bold mb-2 text-white font-eng">DROP A BRIEF <span class="text-neon-pink">🌶️</span></h2>
+        <p class="text-gray-400 font-mono text-sm mb-8">
+          // Fill the fields. We’ll reply with a street-proof plan + budget range.<br />
+          // No spam. No decks. Real execution.
+        </p>
+
+        <form id="brief-form" method="POST" class="space-y-6" novalidate>
+          <!-- Formspree hidden config -->
+          <input type="hidden" name="_subject" value="BOLD — New Brief from Website" />
+          <input type="hidden" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+          <input id="next-url" type="hidden" name="_next" value="" />
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-neon-green text-xs font-mono mb-2">>> COMPANY</label>
+              <input type="text" name="client_name" required class="terminal-input w-full p-3 text-lg" placeholder="Company / brand name" />
+            </div>
+            <div>
+              <label class="block text-neon-green text-xs font-mono mb-2">>> EMAIL</label>
+              <input type="email" name="email" required class="terminal-input w-full p-3 text-lg" placeholder="email@company.com" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-neon-pink text-xs font-mono mb-2">>> SECTOR</label>
+              <select name="sector" required class="terminal-input w-full p-3 text-lg bg-black">
+                <option value="" selected disabled>Select a sector</option>
+                <option>High Tech / HR</option>
+                <option>Real Estate</option>
+                <option>Lifestyle / Retail</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-neon-pink text-xs font-mono mb-2">>> BUDGET</label>
+              <input type="text" name="budget_scope" class="terminal-input w-full p-3 text-lg" placeholder="Budget range (optional)" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-neon-green text-xs font-mono mb-2">>> OBJECTIVE</label>
+            <textarea name="objective" required rows="4" class="terminal-input w-full p-3 text-lg" placeholder="What’s the objective? (launch, leads, employer branding, etc.)"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button id="submit-btn" type="submit" class="w-full bg-neon-pink text-black font-eng font-bold text-xl py-4 hover:bg-white hover:text-neon-pink transition-all shadow-[0_0_20px_rgba(255,0,255,0.5)] mt-2 uppercase">
+              SUBMIT BRIEF 🌶️
+            </button>
+            <button type="button" id="scroll-top" class="w-full border border-neon-green text-neon-green font-eng font-bold text-xl py-4 hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.25)] mt-2 uppercase">
+              BACK TO TOP ↑
+            </button>
+          </div>
+
+          <p class="text-xs text-gray-500 font-mono pt-2">
+            By submitting, you agree we can reply to the email you provided. That’s it. No weirdness.
+          </p>
+
+          <div id="form-status" class="hidden border border-gray-800 p-4 rounded-xl font-mono text-xs text-gray-300"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-gray-900 py-10 text-center">
+    <div class="flex justify-center mb-5">
+      <img src="assets/logos/bold-logo.png" alt="BOLD" class="h-12 w-auto opacity-80" onerror="this.style.display='none'" />
+    </div>
+    <p class="text-gray-500 font-mono text-xs mb-6">
+      TLV BASED. GLOBAL MINDSET.<br />
+      © 2026 BOLD PRODUCTIONS. ALL RIGHTS RESERVED.
+    </p>
+    <div class="flex justify-center gap-6 font-eng text-sm text-neon-green">
+      <!-- Replace with real links -->
+      <a href="#" class="hover:underline">LINKEDIN</a>
+      <a href="#" class="hover:underline">INSTAGRAM</a>
+      <a href="#" class="hover:underline">TIKTOK</a>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ----------------------
+    // HERO GLITCH WORD SWAP
+    // ----------------------
+    const words = [
+      "STEP INTO.",
+      "BUILD.",
+      "EXECUTE.",
+      "TOUCH.",
+      "LAUNCH.",
+      "MEASURE."
+    ];
+
+    const targetSpan = document.getElementById('dynamic-text');
+    let index = 0;
+
+    function cycleWord() {
+      index = (index + 1) % words.length;
+      targetSpan.classList.add('glitch-swap-active');
+      setTimeout(() => { targetSpan.innerText = words[index]; }, 140);
+      setTimeout(() => { targetSpan.classList.remove('glitch-swap-active'); }, 280);
+    }
+
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReducedMotion) setInterval(cycleWord, 1700);
+
+    // ----------------------
+    // HUD / TARGET CANVAS
+    // ----------------------
+    const canvas = document.getElementById('hud-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let mouseX = -100, mouseY = -100;
+    let smoothX = -100, smoothY = -100;
+    const targets = [];
+
+    const colors = {
+      green: '#39ff14',
+      pink: '#ff00ff',
+      red: '#ff3333',
+      cyan: '#00ffff',
+      grid: 'rgba(57, 255, 20, 0.10)'
+    };
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initTargets();
+    }
+
+    function initTargets() {
+      targets.length = 0;
+      const count = Math.floor(width * height / 220000);
+      for (let i = 0; i < count; i++) {
+        targets.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: 10 + Math.random() * 20,
+          rotation: Math.random() * Math.PI * 2,
+          speed: (Math.random() - 0.5) * 0.02,
+          type: Math.floor(Math.random() * 3),
+          color: Math.random() > 0.82 ? colors.pink : colors.grid
+        });
+      }
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    resize();
+
+    function drawHud() {
+      if (prefersReducedMotion) return;
+
+      ctx.clearRect(0, 0, width, height);
+
+      smoothX += (mouseX - smoothX) * 0.15;
+      smoothY += (mouseY - smoothY) * 0.15;
+
+      // Background targets
+      targets.forEach(t => {
+        t.rotation += t.speed;
+        ctx.save();
+        ctx.translate(t.x, t.y);
+        ctx.rotate(t.rotation);
+        ctx.strokeStyle = t.color;
+        ctx.lineWidth = 1;
+
+        if (t.type === 0) {
+          ctx.setLineDash([5, 10]);
+          ctx.beginPath();
+          ctx.arc(0, 0, t.size, 0, Math.PI * 2);
+          ctx.stroke();
+        } else if (t.type === 1) {
+          const s = t.size;
+          ctx.setLineDash([]);
+          ctx.beginPath();
+          ctx.moveTo(-s, -s/2); ctx.lineTo(-s, -s); ctx.lineTo(-s/2, -s);
+          ctx.moveTo(s, s/2); ctx.lineTo(s, s); ctx.lineTo(s/2, s);
+          ctx.stroke();
+        } else {
+          ctx.setLineDash([]);
+          ctx.beginPath();
+          ctx.moveTo(-4, 0); ctx.lineTo(4, 0);
+          ctx.moveTo(0, -4); ctx.lineTo(0, 4);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      });
+
+      // Crosshairs
+      ctx.strokeStyle = 'rgba(57, 255, 20, 0.14)';
+      ctx.setLineDash([]);
+      ctx.lineWidth = 1;
+
+      ctx.beginPath();
+      ctx.moveTo(smoothX, 0);
+      ctx.lineTo(smoothX, height);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, smoothY);
+      ctx.lineTo(width, smoothY);
+      ctx.stroke();
+
+      // Active reticle
+      ctx.strokeStyle = colors.pink;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(smoothX, smoothY, 8, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(smoothX, smoothY);
+      ctx.rotate(Date.now() / 500);
+      ctx.strokeStyle = colors.cyan;
+      ctx.setLineDash([8, 12]);
+      ctx.beginPath();
+      ctx.arc(0, 0, 20, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+
+      // Data text
+      ctx.fillStyle = colors.green;
+      ctx.font = '10px Space Grotesk';
+      ctx.fillText(`X: ${Math.round(smoothX)}`, smoothX + 25, smoothY - 20);
+      ctx.fillText(`Y: ${Math.round(smoothY)}`, smoothX + 25, smoothY - 8);
+
+      if (Math.random() > 0.96) {
+        ctx.fillStyle = colors.red;
+        ctx.fillText('LOCKED', smoothX + 25, smoothY + 20);
+      }
+
+      requestAnimationFrame(drawHud);
+    }
+
+    drawHud();
+
+    // ----------------------
+    // FORM: send to Formspree + UX status
+    // ----------------------
+    const form = document.getElementById('brief-form');
+    const statusBox = document.getElementById('form-status');
+    const submitBtn = document.getElementById('submit-btn');
+    const nextInput = document.getElementById('next-url');
+    const toast = document.getElementById('toast');
+
+    // Set action + redirect target
+    form.action = window.BOLD_FORM_ACTION;
+    nextInput.value = `${window.BOLD_SITE_URL.replace(/\/$/, '')}/thanks.html`;
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    function setStatus(html, isError = false) {
+      statusBox.classList.remove('hidden');
+      statusBox.innerHTML = html;
+      statusBox.style.borderColor = isError ? 'rgba(255,51,51,0.7)' : 'rgba(57,255,20,0.6)';
+    }
+
+    function validateEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fd = new FormData(form);
+      const company = (fd.get('client_name') || '').toString().trim();
+      const email = (fd.get('email') || '').toString().trim();
+      const sector = (fd.get('sector') || '').toString().trim();
+      const objective = (fd.get('objective') || '').toString().trim();
+
+      // Client-side validation
+      if (!company || !email || !sector || !objective) {
+        showToast('Fill required fields.');
+        setStatus('> ERROR: Missing required fields. Please complete COMPANY, EMAIL, SECTOR, OBJECTIVE.', true);
+        return;
+      }
+      if (!validateEmail(email)) {
+        showToast('Invalid email.');
+        setStatus('> ERROR: Invalid email format. Please check EMAIL.', true);
+        return;
+      }
+
+      // UX
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'SENDING...';
+      setStatus('> Sending...');
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: fd,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          setStatus('> RECEIVED. Redirecting...');
+          showToast('Brief received. 🎯');
+          // Redirect
+          window.location.href = nextInput.value;
+          return;
+        }
+
+        // Handle Formspree JSON error
+        let data = null;
+        try { data = await res.json(); } catch (_) {}
+
+        if (data && data.errors && data.errors.length) {
+          const msg = data.errors.map(x => x.message).join(' | ');
+          setStatus(`> ERROR: ${msg}`, true);
+        } else {
+          setStatus('> ERROR: Submission failed. Check Formspree settings (email verified / form active).', true);
+        }
+        showToast('Send failed.');
+
+      } catch (err) {
+        setStatus('> ERROR: Network issue. Try again in a minute.', true);
+        showToast('Network error.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'SUBMIT BRIEF 🌶️';
+      }
+    });
+
+    // Back to top
+    document.getElementById('scroll-top').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+
+    // Coords display: small “alive” touch
+    const coordsEl = document.getElementById('coords-display');
+    if (coordsEl && !prefersReducedMotion) {
+      setInterval(() => {
+        const lat = 32.0853 + (Math.random() - 0.5) * 0.003;
+        const lon = 34.7818 + (Math.random() - 0.5) * 0.003;
+        coordsEl.textContent = `${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E`;
+      }, 1800);
+    }
+  </script>
+</body>
+</html>
