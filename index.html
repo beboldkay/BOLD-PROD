@@ -35,12 +35,12 @@
       theme: {
         extend: {
           colors: {
-            'neon-pink': '#ff00ff',
-            'neon-green': '#39ff14',
+            'neon-pink': '#FF12B3',
+            'neon-green': '#C8FF14',
             'neon-red': '#ff3333',
-            'neon-cyan': '#00ffff',
-            'void-black': '#050505',
-            'panel-gray': '#111111',
+            'neon-cyan': '#00F0FF',
+            'void-black': '#111111',
+            'panel-gray': '#1A1A1A',
           },
           fontFamily: {
             'sans': ['Heebo', 'sans-serif'],
@@ -64,7 +64,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: #050505;
+      background-color: #111111;
       color: #ffffff;
       overflow-x: hidden;
       cursor: none; /* HUD cursor */
@@ -78,9 +78,10 @@
       .scanlines { display: none; }
     }
 
-    .box-glow-green:hover { box-shadow: 0 0 18px #39ff14, inset 0 0 12px #39ff14; border-color: #39ff14; }
-    .box-glow-pink:hover { box-shadow: 0 0 18px #ff00ff, inset 0 0 12px #ff00ff; border-color: #ff00ff; }
-    .box-glow-red:hover { box-shadow: 0 0 18px #ff3333, inset 0 0 12px #ff3333; border-color: #ff3333; }
+    .box-glow-green:hover { box-shadow: 0 0 18px #C8FF14, inset 0 0 12px #C8FF14; border-color: #C8FF14; }
+    .box-glow-pink:hover  { box-shadow: 0 0 18px #FF12B3, inset 0 0 12px #FF12B3; border-color: #FF12B3; }
+    .box-glow-red:hover   { box-shadow: 0 0 18px #ff3333, inset 0 0 12px #ff3333; border-color: #ff3333; }
+    .box-glow-cyan:hover  { box-shadow: 0 0 18px #00F0FF, inset 0 0 12px #00F0FF; border-color: #00F0FF; }
 
     /* HUD Canvas */
     #hud-canvas {
@@ -98,17 +99,17 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: #050505;
+      background: #111111;
     }
     .glitch-wrapper::before {
       left: 2px;
-      text-shadow: -1px 0 #ff00ff;
+      text-shadow: -1px 0 #FF12B3;
       clip: rect(24px, 550px, 90px, 0);
       animation: glitch-anim-2 3s infinite linear alternate-reverse;
     }
     .glitch-wrapper::after {
       left: -2px;
-      text-shadow: -1px 0 #39ff14;
+      text-shadow: -1px 0 #C8FF14;
       clip: rect(85px, 550px, 140px, 0);
       animation: glitch-anim 2.5s infinite linear alternate-reverse;
     }
@@ -132,8 +133,8 @@
     /* Hero word swap glitch */
     .glitch-swap-active {
       animation: glitch-swap 0.28s steps(2, end) both;
-      color: #39ff14 !important;
-      text-shadow: 4px 0 #ff00ff, -4px 0 #ff3333;
+      color: #C8FF14 !important;
+      text-shadow: 4px 0 #FF12B3, -4px 0 #ff3333;
     }
     @keyframes glitch-swap {
       0% { transform: translate(0,0); opacity: 1; clip-path: inset(0 0 0 0); }
@@ -158,15 +159,15 @@
     .terminal-input {
       background: transparent;
       border: 1px solid #333;
-      color: #39ff14;
+      color: #C8FF14;
       font-family: 'Space Grotesk', monospace;
       transition: all 0.25s;
       cursor: none;
     }
     .terminal-input:focus {
-      border-color: #ff00ff;
+      border-color: #FF12B3;
       outline: none;
-      box-shadow: 0 0 10px #ff00ff;
+      box-shadow: 0 0 10px #FF12B3;
     }
     .terminal-input::placeholder { color: #555; }
 
@@ -182,7 +183,7 @@
       transform: translateX(-50%);
       bottom: 18px;
       background: rgba(0,0,0,0.85);
-      border: 1px solid rgba(57,255,20,0.6);
+      border: 1px solid rgba(200,255,20,0.6);
       padding: 10px 14px;
       border-radius: 12px;
       font-family: 'Space Grotesk', system-ui;
@@ -192,6 +193,9 @@
       display: none;
     }
     .toast.show { display: block; }
+
+    /* Process section: hide last mobile connector */
+    #process .grid > div:last-child .mobile-connector { display: none; }
   </style>
 </head>
 
@@ -216,9 +220,10 @@
     </a>
 
     <div class="hidden md:flex gap-6 font-eng font-bold text-sm tracking-widest">
-      <a href="#manifesto" class="hover:text-neon-pink transition-colors">WHO_ARE_WE?</a>
       <a href="#sectors" class="hover:text-neon-pink transition-colors">SECTORS</a>
-      <a href="#proof" class="hover:text-neon-pink transition-colors">PROOF</a>
+      <a href="#work" class="hover:text-neon-pink transition-colors">WORK</a>
+      <a href="#process" class="hover:text-neon-pink transition-colors">PROCESS</a>
+      <a href="#manifesto" class="hover:text-neon-pink transition-colors">WHO_ARE_WE?</a>
       <a href="#brief" class="border border-neon-green px-4 py-2 hover:bg-neon-green hover:text-black transition-all">DROP_A_BRIEF_🌶️</a>
     </div>
 
@@ -241,7 +246,7 @@
 
     <h1 class="text-6xl md:text-9xl font-black leading-none mb-4 relative z-10 font-eng">
       IDEAS YOU CAN<br />
-      <span id="dynamic-text" class="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-pink filter drop-shadow-[0_0_10px_rgba(57,255,20,0.8)] transition-all duration-100 inline-block mt-2">STEP INTO.</span>
+      <span id="dynamic-text" class="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-pink filter drop-shadow-[0_0_10px_rgba(200,255,20,0.8)] transition-all duration-100 inline-block mt-2">STEP INTO.</span>
     </h1>
 
     <p class="text-lg md:text-2xl text-gray-300 font-light max-w-3xl mt-6">
@@ -251,19 +256,56 @@
     </p>
 
     <div class="mt-10 flex flex-col md:flex-row gap-5 justify-center">
-      <a href="#sectors" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black transition-all shadow-[0_0_15px_rgba(255,0,255,0.4)]">
-        LET’S GET BOLD
+      <a href="#sectors" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black transition-all shadow-[0_0_15px_rgba(255,18,179,0.4)]">
+        LET'S GET BOLD
       </a>
 
-      <a href="#brief" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.35)]">
+      <a href="#brief" class="font-eng font-bold text-lg px-8 py-4 border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(200,255,20,0.35)]">
         DROP A BRIEF 🌶️
       </a>
     </div>
 
     <p class="mt-6 text-xs text-gray-500 font-mono">
-      Reply time: 24–48h. If it’s urgent, write “URGENT”.
+      Reply time: 24–48h. If it's urgent, write "URGENT".
     </p>
   </header>
+
+  <!-- Sectors -->
+  <section id="sectors" class="py-20 px-6 md:px-12 bg-void-black">
+    <h2 class="text-center font-eng text-5xl md:text-7xl font-bold mb-14 text-white glitch-wrapper" data-text="OUR_PLAYGROUND">OUR_PLAYGROUND</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-green group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-green rounded-full animate-pulse"></div></div>
+        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">👾</div>
+        <h3 class="font-eng text-2xl font-bold text-white mb-2">HIGH TECH & HR</h3>
+        <p class="text-gray-400 text-sm mb-6">Employer branding that doesn't feel like a corporate fun day. Retreats, onboarding, internal launches, and content moments.</p>
+        <div class="font-mono text-xs text-neon-green">[FORMAT: RETREATS / HACKATHONS]</div>
+      </div>
+
+      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-pink group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-pink rounded-full animate-pulse"></div></div>
+        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🏗️</div>
+        <h3 class="font-eng text-2xl font-bold text-white mb-2">REAL ESTATE</h3>
+        <p class="text-gray-400 text-sm mb-6">Experiential marketing for neighborhoods and towers — smarter than billboards. Street activations, art drops, and sales centers that feel cultural.</p>
+        <div class="font-mono text-xs text-neon-pink">[FORMAT: STREET DROPS / POP-UPS]</div>
+      </div>
+
+      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-red group relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-red rounded-full animate-pulse"></div></div>
+        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🛍️</div>
+        <h3 class="font-eng text-2xl font-bold text-white mb-2">LIFESTYLE & RETAIL</h3>
+        <p class="text-gray-400 text-sm mb-6">Pop-ups that convert. Launches that look good and sell. Physical-to-digital mechanics that generate leads and UGC.</p>
+        <div class="font-mono text-xs text-neon-red">[FORMAT: LAUNCHES / UGC MACHINES]</div>
+      </div>
+    </div>
+
+    <div class="max-w-5xl mx-auto mt-12 text-center">
+      <a href="#brief" class="inline-block font-eng font-bold text-base px-6 py-3 border border-neon-green text-neon-green hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(200,255,20,0.25)]">
+        READY? DROP A BRIEF 🌶️
+      </a>
+    </div>
+  </section>
 
   <!-- Proof strip -->
   <section id="proof" class="py-10 bg-black border-t border-gray-900">
@@ -272,6 +314,144 @@
       <div class="flex justify-center items-center gap-8 opacity-80 flex-wrap">
         <img src="assets/logos/bold-logo.png" class="h-8 md:h-10" alt="BOLD logo" onerror="this.style.display='none'" />
         <span class="text-gray-600 font-mono text-xs">// Add client logos in assets/logos/ and drop them here</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work / Case Studies -->
+  <section id="work" class="py-20 px-6 md:px-12 bg-panel-gray">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <h2 class="text-neon-green font-eng text-sm tracking-[0.2em] mb-3">// CASE_FILES</h2>
+          <h3 class="font-eng text-5xl md:text-7xl font-bold text-white">WORK.</h3>
+        </div>
+        <p class="text-gray-500 font-mono text-xs max-w-xs md:text-right hidden md:block">
+          // Real briefs. Real streets. Real numbers.<br />
+          // Cases loading — check back soon.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- Case Study Card 1: High Tech -->
+        <div class="border border-gray-800 bg-black p-8 relative overflow-hidden group transition-all duration-300 box-glow-green">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-green to-transparent opacity-60"></div>
+          <div class="font-mono text-xs text-neon-green mb-4 tracking-widest">[HIGH TECH &amp; HR]</div>
+          <h4 class="font-eng text-2xl font-bold text-white mb-3">Employer Brand<br />Activation</h4>
+          <p class="text-gray-500 text-sm mb-6 leading-relaxed">Internal launch event built to feel like a product drop — not a company picnic. QR mechanics, live content capture, and a 2-day retreat format that shipped measurable sentiment lift.</p>
+          <div class="border border-gray-800 p-3 mb-6">
+            <div class="text-xs font-mono text-gray-500 mb-1">KEY METRIC</div>
+            <div class="font-eng text-3xl font-bold text-neon-green">94%</div>
+            <div class="text-xs text-gray-400 font-mono">employee NPS score</div>
+          </div>
+          <div class="font-mono text-xs text-gray-600 border-t border-gray-900 pt-4 flex items-center justify-between">
+            <span>STATUS: COMING_SOON</span>
+            <div class="w-2 h-2 bg-neon-green rounded-full animate-pulse"></div>
+          </div>
+        </div>
+
+        <!-- Case Study Card 2: Real Estate -->
+        <div class="border border-gray-800 bg-black p-8 relative overflow-hidden group transition-all duration-300 box-glow-pink">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-pink to-transparent opacity-60"></div>
+          <div class="font-mono text-xs text-neon-pink mb-4 tracking-widest">[REAL ESTATE]</div>
+          <h4 class="font-eng text-2xl font-bold text-white mb-3">Neighbourhood<br />Street Activation</h4>
+          <p class="text-gray-500 text-sm mb-6 leading-relaxed">Three-weekend guerrilla campaign for a new residential tower. Street art drops, QR-gated lead capture, and a pop-up sales centre that out-converted the show apartment by 3×.</p>
+          <div class="border border-gray-800 p-3 mb-6">
+            <div class="text-xs font-mono text-gray-500 mb-1">KEY METRIC</div>
+            <div class="font-eng text-3xl font-bold text-neon-pink">3×</div>
+            <div class="text-xs text-gray-400 font-mono">lead conversion vs showroom</div>
+          </div>
+          <div class="font-mono text-xs text-gray-600 border-t border-gray-900 pt-4 flex items-center justify-between">
+            <span>STATUS: COMING_SOON</span>
+            <div class="w-2 h-2 bg-neon-pink rounded-full animate-pulse"></div>
+          </div>
+        </div>
+
+        <!-- Case Study Card 3: Lifestyle -->
+        <div class="border border-gray-800 bg-black p-8 relative overflow-hidden group transition-all duration-300 box-glow-cyan">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan to-transparent opacity-60"></div>
+          <div class="font-mono text-xs text-neon-cyan mb-4 tracking-widest">[LIFESTYLE &amp; RETAIL]</div>
+          <h4 class="font-eng text-2xl font-bold text-white mb-3">Pop-Up Launch<br />&amp; UGC Machine</h4>
+          <p class="text-gray-500 text-sm mb-6 leading-relaxed">Weekend pop-up for a lifestyle brand going DTC. Physical-to-digital mechanics drove 2,400 UGC assets in 48 hours. Zero paid media. All earned.</p>
+          <div class="border border-gray-800 p-3 mb-6">
+            <div class="text-xs font-mono text-gray-500 mb-1">KEY METRIC</div>
+            <div class="font-eng text-3xl font-bold text-neon-cyan">2.4K</div>
+            <div class="text-xs text-gray-400 font-mono">UGC assets in 48h</div>
+          </div>
+          <div class="font-mono text-xs text-gray-600 border-t border-gray-900 pt-4 flex items-center justify-between">
+            <span>STATUS: COMING_SOON</span>
+            <div class="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section id="process" class="py-20 px-6 md:px-12 bg-void-black border-t border-gray-900">
+    <div class="max-w-6xl mx-auto">
+      <div class="mb-14 text-center">
+        <h2 class="text-neon-green font-eng text-sm tracking-[0.2em] mb-3">// HOW_IT_WORKS</h2>
+        <h3 class="font-eng text-5xl md:text-7xl font-bold text-white">PROCESS.</h3>
+      </div>
+
+      <!-- Desktop: horizontal stepper; Mobile: stacked -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-0 relative">
+
+        <!-- Connector line (desktop only) -->
+        <div class="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-neon-green via-neon-pink to-neon-cyan opacity-30"></div>
+
+        <!-- Step 1: BRIEF -->
+        <div class="relative flex flex-col items-center text-center px-4 pb-10 md:pb-0">
+          <div class="w-16 h-16 border-2 border-neon-green flex items-center justify-center mb-6 bg-black relative z-10">
+            <span class="font-eng text-neon-green font-bold text-xl">01</span>
+          </div>
+          <div class="font-mono text-xs text-neon-green tracking-widest mb-3">BRIEF</div>
+          <h4 class="font-eng text-xl font-bold text-white mb-3">You talk.<br />We listen hard.</h4>
+          <p class="text-gray-500 text-sm leading-relaxed">Drop a brief or jump on a call. We dig into your objective, audience, budget, and timeline — no generic questionnaire.</p>
+          <div class="mobile-connector md:hidden w-px h-8 bg-neon-green opacity-30 mt-6"></div>
+        </div>
+
+        <!-- Step 2: STRATEGY -->
+        <div class="relative flex flex-col items-center text-center px-4 pb-10 md:pb-0">
+          <div class="w-16 h-16 border-2 border-neon-pink flex items-center justify-center mb-6 bg-black relative z-10">
+            <span class="font-eng text-neon-pink font-bold text-xl">02</span>
+          </div>
+          <div class="font-mono text-xs text-neon-pink tracking-widest mb-3">STRATEGY</div>
+          <h4 class="font-eng text-xl font-bold text-white mb-3">Street-proof<br />concept in 48h.</h4>
+          <p class="text-gray-500 text-sm leading-relaxed">We return with a concept deck, budget range, and a clear mechanic — not vibes. Every idea is costed and buildable from day one.</p>
+          <div class="mobile-connector md:hidden w-px h-8 bg-neon-pink opacity-30 mt-6"></div>
+        </div>
+
+        <!-- Step 3: EXECUTE -->
+        <div class="relative flex flex-col items-center text-center px-4 pb-10 md:pb-0">
+          <div class="w-16 h-16 border-2 border-neon-cyan flex items-center justify-center mb-6 bg-black relative z-10">
+            <span class="font-eng text-neon-cyan font-bold text-xl">03</span>
+          </div>
+          <div class="font-mono text-xs text-neon-cyan tracking-widest mb-3">EXECUTE</div>
+          <h4 class="font-eng text-xl font-bold text-white mb-3">We build it.<br />On-site, on-brand.</h4>
+          <p class="text-gray-500 text-sm leading-relaxed">Full production management — fabrication, logistics, on-ground crew, live content capture. We run the site so you can run the brand.</p>
+          <div class="mobile-connector md:hidden w-px h-8 bg-neon-cyan opacity-30 mt-6"></div>
+        </div>
+
+        <!-- Step 4: MEASURE -->
+        <div class="relative flex flex-col items-center text-center px-4">
+          <div class="w-16 h-16 border-2 border-neon-green flex items-center justify-center mb-6 bg-black relative z-10">
+            <span class="font-eng text-neon-green font-bold text-xl">04</span>
+          </div>
+          <div class="font-mono text-xs text-neon-green tracking-widest mb-3">MEASURE</div>
+          <h4 class="font-eng text-xl font-bold text-white mb-3">KPIs or it<br />didn't happen.</h4>
+          <p class="text-gray-500 text-sm leading-relaxed">Within 48h of wrap you get a report: footfall, QR scans, UGC count, lead capture, and earned media. Hard numbers, no fluff.</p>
+        </div>
+
+      </div>
+
+      <div class="mt-14 text-center">
+        <a href="#brief" class="inline-block font-eng font-bold text-base px-8 py-4 border-2 border-neon-pink text-neon-pink hover:bg-neon-pink hover:text-black transition-all shadow-[0_0_15px_rgba(255,18,179,0.35)]">
+          START THE PROCESS 🌶️
+        </a>
       </div>
     </div>
   </section>
@@ -285,7 +465,7 @@
         <h2 class="text-neon-green font-eng text-sm tracking-[0.2em] mb-4">// SYSTEM_OVERRIDE</h2>
         <h3 class="text-4xl md:text-5xl font-bold mb-8 leading-tight">
           Not an agency.<br />
-          Not “event suppliers”.<br />
+          Not "event suppliers".<br />
           <span class="text-neon-pink">We build the scene.</span>
         </h3>
         <p class="text-gray-400 text-lg mb-6">
@@ -294,7 +474,7 @@
         <ul class="space-y-4 font-mono text-sm text-white">
           <li class="flex items-center gap-3"><span class="text-neon-green">>></span> Transparent production</li>
           <li class="flex items-center gap-3"><span class="text-neon-green">>></span> Execution-first creative</li>
-          <li class="flex items-center gap-3"><span class="text-neon-green">>></span> KPIs or it didn’t happen</li>
+          <li class="flex items-center gap-3"><span class="text-neon-green">>></span> KPIs or it didn't happen</li>
         </ul>
       </div>
 
@@ -318,43 +498,6 @@
     </div>
   </section>
 
-  <!-- Sectors -->
-  <section id="sectors" class="py-20 px-6 md:px-12 bg-void-black">
-    <h2 class="text-center font-eng text-5xl md:text-7xl font-bold mb-14 text-white glitch-wrapper" data-text="OUR_PLAYGROUND">OUR_PLAYGROUND</h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-green group relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-green rounded-full animate-pulse"></div></div>
-        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">👾</div>
-        <h3 class="font-eng text-2xl font-bold text-white mb-2">HIGH TECH & HR</h3>
-        <p class="text-gray-400 text-sm mb-6">Employer branding that doesn’t feel like a corporate fun day. Retreats, onboarding, internal launches, and content moments.</p>
-        <div class="font-mono text-xs text-neon-green">[FORMAT: RETREATS / HACKATHONS]</div>
-      </div>
-
-      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-pink group relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-pink rounded-full animate-pulse"></div></div>
-        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🏗️</div>
-        <h3 class="font-eng text-2xl font-bold text-white mb-2">REAL ESTATE</h3>
-        <p class="text-gray-400 text-sm mb-6">Experiential marketing for neighborhoods and towers — smarter than billboards. Street activations, art drops, and sales centers that feel cultural.</p>
-        <div class="font-mono text-xs text-neon-pink">[FORMAT: STREET DROPS / POP-UPS]</div>
-      </div>
-
-      <div class="border border-gray-800 p-8 bg-black hover:bg-gray-900 transition-all duration-300 box-glow-red group relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity"><div class="w-3 h-3 bg-neon-red rounded-full animate-pulse"></div></div>
-        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🛍️</div>
-        <h3 class="font-eng text-2xl font-bold text-white mb-2">LIFESTYLE & RETAIL</h3>
-        <p class="text-gray-400 text-sm mb-6">Pop-ups that convert. Launches that look good and sell. Physical-to-digital mechanics that generate leads and UGC.</p>
-        <div class="font-mono text-xs text-neon-red">[FORMAT: LAUNCHES / UGC MACHINES]</div>
-      </div>
-    </div>
-
-    <div class="max-w-5xl mx-auto mt-12 text-center">
-      <a href="#brief" class="inline-block font-eng font-bold text-base px-6 py-3 border border-neon-green text-neon-green hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.25)]">
-        READY? DROP A BRIEF 🌶️
-      </a>
-    </div>
-  </section>
-
   <!-- Brief Terminal -->
   <section id="brief" class="py-20 px-4 bg-void-black border-t-2 border-neon-pink relative">
     <div class="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
@@ -363,7 +506,7 @@
       <div class="absolute top-1/2 left-1/2 text-6xl">💿</div>
     </div>
 
-    <div class="max-w-3xl mx-auto relative z-10 border-2 border-neon-green bg-black p-2 shadow-[0_0_30px_rgba(57,255,20,0.2)]">
+    <div class="max-w-3xl mx-auto relative z-10 border-2 border-neon-green bg-black p-2 shadow-[0_0_30px_rgba(200,255,20,0.2)]">
       <div class="bg-neon-green text-black font-mono text-xs p-2 flex justify-between items-center mb-6">
         <span>BOLD_TERMINAL.EXE</span>
         <div class="flex gap-2"><div class="w-3 h-3 rounded-full bg-black"></div><div class="w-3 h-3 rounded-full bg-black"></div></div>
@@ -372,7 +515,7 @@
       <div class="p-4 md:p-8">
         <h2 class="text-4xl font-bold mb-2 text-white font-eng">DROP A BRIEF <span class="text-neon-pink">🌶️</span></h2>
         <p class="text-gray-400 font-mono text-sm mb-8">
-          // Fill the fields. We’ll reply with a street-proof plan + budget range.<br />
+          // Fill the fields. We'll reply with a street-proof plan + budget range.<br />
           // No spam. No decks. Real execution.
         </p>
 
@@ -412,20 +555,20 @@
 
           <div>
             <label class="block text-neon-green text-xs font-mono mb-2">>> OBJECTIVE</label>
-            <textarea name="objective" required rows="4" class="terminal-input w-full p-3 text-lg" placeholder="What’s the objective? (launch, leads, employer branding, etc.)"></textarea>
+            <textarea name="objective" required rows="4" class="terminal-input w-full p-3 text-lg" placeholder="What's the objective? (launch, leads, employer branding, etc.)"></textarea>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button id="submit-btn" type="submit" class="w-full bg-neon-pink text-black font-eng font-bold text-xl py-4 hover:bg-white hover:text-neon-pink transition-all shadow-[0_0_20px_rgba(255,0,255,0.5)] mt-2 uppercase">
+            <button id="submit-btn" type="submit" class="w-full bg-neon-pink text-black font-eng font-bold text-xl py-4 hover:bg-white hover:text-neon-pink transition-all shadow-[0_0_20px_rgba(255,18,179,0.5)] mt-2 uppercase">
               SUBMIT BRIEF 🌶️
             </button>
-            <button type="button" id="scroll-top" class="w-full border border-neon-green text-neon-green font-eng font-bold text-xl py-4 hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(57,255,20,0.25)] mt-2 uppercase">
+            <button type="button" id="scroll-top" class="w-full border border-neon-green text-neon-green font-eng font-bold text-xl py-4 hover:bg-neon-green hover:text-black transition-all shadow-[0_0_15px_rgba(200,255,20,0.25)] mt-2 uppercase">
               BACK TO TOP ↑
             </button>
           </div>
 
           <p class="text-xs text-gray-500 font-mono pt-2">
-            By submitting, you agree we can reply to the email you provided. That’s it. No weirdness.
+            By submitting, you agree we can reply to the email you provided. That's it. No weirdness.
           </p>
 
           <div id="form-status" class="hidden border border-gray-800 p-4 rounded-xl font-mono text-xs text-gray-300"></div>
@@ -444,10 +587,10 @@
       © 2026 BOLD PRODUCTIONS. ALL RIGHTS RESERVED.
     </p>
     <div class="flex justify-center gap-6 font-eng text-sm text-neon-green">
-      <!-- Replace with real links -->
-      <a href="#" class="hover:underline">LINKEDIN</a>
-      <a href="#" class="hover:underline">INSTAGRAM</a>
-      <a href="#" class="hover:underline">TIKTOK</a>
+      <!-- Replace href values with real links -->
+      <a href="#" rel="noopener noreferrer" target="_blank" class="hover:underline">LINKEDIN</a>
+      <a href="#" rel="noopener noreferrer" target="_blank" class="hover:underline">INSTAGRAM</a>
+      <a href="#" rel="noopener noreferrer" target="_blank" class="hover:underline">TIKTOK</a>
     </div>
   </footer>
 
@@ -491,11 +634,11 @@
     const targets = [];
 
     const colors = {
-      green: '#39ff14',
-      pink: '#ff00ff',
+      green: '#C8FF14',
+      pink: '#FF12B3',
       red: '#ff3333',
-      cyan: '#00ffff',
-      grid: 'rgba(57, 255, 20, 0.10)'
+      cyan: '#00F0FF',
+      grid: 'rgba(200, 255, 20, 0.10)'
     };
 
     function resize() {
@@ -569,7 +712,7 @@
       });
 
       // Crosshairs
-      ctx.strokeStyle = 'rgba(57, 255, 20, 0.14)';
+      ctx.strokeStyle = 'rgba(200, 255, 20, 0.14)';
       ctx.setLineDash([]);
       ctx.lineWidth = 1;
 
@@ -638,7 +781,7 @@
     function setStatus(html, isError = false) {
       statusBox.classList.remove('hidden');
       statusBox.innerHTML = html;
-      statusBox.style.borderColor = isError ? 'rgba(255,51,51,0.7)' : 'rgba(57,255,20,0.6)';
+      statusBox.style.borderColor = isError ? 'rgba(255,51,51,0.7)' : 'rgba(200,255,20,0.6)';
     }
 
     function validateEmail(value) {
@@ -712,7 +855,7 @@
       window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     });
 
-    // Coords display: small “alive” touch
+    // Coords display: small "alive" touch
     const coordsEl = document.getElementById('coords-display');
     if (coordsEl && !prefersReducedMotion) {
       setInterval(() => {
