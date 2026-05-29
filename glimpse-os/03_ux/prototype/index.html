@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Glimpse — The moments you won't be there for, still arrive.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#1A1A1F",
+              paper: "#F6F1EA",
+              linen: "#EDE4D6",
+              dawn: "#E9C9A8",
+              vellum: "#FBF7F1",
+              brass: "#B08A4E",
+              brassDeep: "#8E6F3D",
+              deep: "#2A2F3A",
+              mist: "#C8CCD2",
+              pulse: "#7CA39C",
+            },
+            fontFamily: {
+              serif: ['Fraunces', 'Georgia', 'serif'],
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            boxShadow: {
+              vellum: '0 8px 24px -12px rgba(26,26,31,0.12)',
+              press: 'inset 0 0 0 1px rgba(26,26,31,0.06)',
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html, body { background-color: #F6F1EA; color: #1A1A1F; }
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        font-feature-settings: 'ss01' on, 'cv11' on;
+        -webkit-font-smoothing: antialiased;
+      }
+      .font-serif { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; }
+      .settle { animation: settle 700ms cubic-bezier(0.4,0,0.2,1) both; }
+      @keyframes settle {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .settle-slow { animation: settleSlow 1400ms cubic-bezier(0.4,0,0.2,1) both; }
+      @keyframes settleSlow {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .hairline { height: 1px; background: rgba(26,26,31,0.12); }
+      .brass-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #B08A4E 30%, #B08A4E 70%, transparent);
+      }
+      .paper-grain {
+        background-image:
+          radial-gradient(rgba(26,26,31,0.018) 1px, transparent 1px),
+          radial-gradient(rgba(26,26,31,0.012) 1px, transparent 1px);
+        background-size: 3px 3px, 7px 7px;
+        background-position: 0 0, 1px 2px;
+      }
+      .glass {
+        background: rgba(251,247,241,0.62);
+        backdrop-filter: blur(18px) saturate(110%);
+        -webkit-backdrop-filter: blur(18px) saturate(110%);
+        box-shadow: inset 0 0 0 1px rgba(26,26,31,0.08);
+      }
+      .author-script { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: 0.01em; }
+      .focus-ring:focus { outline: none; box-shadow: 0 0 0 2px #B08A4E33, 0 0 0 1px #B08A4E; border-color: #B08A4E; }
+      ::selection { background: #E9C9A8; color: #1A1A1F; }
+      .dawn-glow {
+        background:
+          radial-gradient(900px 500px at 20% -10%, rgba(233,201,168,0.55), transparent 60%),
+          radial-gradient(700px 400px at 90% 10%, rgba(124,163,156,0.18), transparent 60%);
+      }
+    </style>
+  </head>
+  <body class="paper-grain">
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+
+    <script type="text/babel" data-presets="react">
+      const { useState, useEffect, useMemo } = React;
+
+      const NAV = {
+        HOME: "home",
+        BEGIN: "begin",
+        VAULT: "vault",
+        RECIPIENT: "recipient",
+        DELIVERY: "delivery",
+        ETHICS: "ethics",
+      };
+
+      const SEED_GLIMPSES = [
+        {
+          id: "g-001",
+          recipient: "Maya",
+          relationship: "Daughter",
+          moment: "On her wedding morning",
+          scheduledFor: "April 14, 2042",
+          status: "Scheduled",
+          author: "Dad",
+          authoredOn: "March 2, 2031",
+          channel: "Voice + linen-bound box",
+          message:
+            "Maya — if you're reading this, then today is the day. I want you to know I picked this morning a long time ago, on a Tuesday in March, because I knew I would not be in the room. I am in the room. I am the breath before you walk in. Don't rush the doorway. Listen for the song I left for your mother, and then walk through.",
+        },
+        {
+          id: "g-002",
+          recipient: "Maya",
+          relationship: "Daughter",
+          moment: "First morning after a hard one",
+          scheduledFor: "On request",
+          status: "Standing by",
+          author: "Dad",
+          authoredOn: "March 2, 2031",
+          channel: "Voice note",
+          message:
+            "It is not your job to be okay this morning. It is your job to make the coffee, drink half of it, and put your shoes on. That is the whole assignment. I love you. I'll send you the rest of it tomorrow.",
+        },
+        {
+          id: "g-003",
+          recipient: "Noah",
+          relationship: "Grandson",
+          moment: "Eighteenth birthday",
+          scheduledFor: "August 9, 2049",
+          status: "Scheduled",
+          author: "Grandpa",
+          authoredOn: "June 2031",
+          channel: "Letter + brass key fob",
+          message:
+            "Noah — the key in this envelope opens nothing. It is a brass weight from my desk, the one I rubbed with my thumb whenever I had to think hard. You are eighteen today. Carry it for a year. Then put it on a desk of your own.",
+        },
+      ];
+
+      function TopBar({ onNav, current, killBarHidden }) {
+        return (
+          <div className="sticky top-0 z-30">
+            <div className="glass">
+              <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+                <button
+                  onClick={() => onNav(NAV.HOME)}
+                  className="flex items-center gap-2 group"
+                  aria-label="Glimpse home"
+                >
+                  <span className="inline-block w-2 h-2 rounded-full bg-brass group-hover:scale-110 transition" />
+                  <span className="font-serif text-lg tracking-tight">Glimpse</span>
+                </button>
+                <nav className="flex items-center gap-1 text-sm">
+                  <NavLink active={current === NAV.HOME} onClick={() => onNav(NAV.HOME)}>Home</NavLink>
+                  <NavLink active={current === NAV.BEGIN} onClick={() => onNav(NAV.BEGIN)}>Begin a Vault</NavLink>
+                  <NavLink active={current === NAV.VAULT} onClick={() => onNav(NAV.VAULT)}>The Vault</NavLink>
+                  <NavLink active={current === NAV.RECIPIENT} onClick={() => onNav(NAV.RECIPIENT)}>Recipient</NavLink>
+                  <NavLink active={current === NAV.ETHICS} onClick={() => onNav(NAV.ETHICS)}>How it stops</NavLink>
+                </nav>
+              </div>
+            </div>
+            {!killBarHidden && (
+              <div className="bg-paper">
+                <div className="max-w-6xl mx-auto px-6 py-1.5 text-[11px] tracking-wide text-ink/60 flex items-center justify-between">
+                  <span>Every Glimpse is authored, welcomed, human-reviewed, and stoppable.</span>
+                  <button
+                    onClick={() => onNav(NAV.ETHICS)}
+                    className="underline decoration-brass/60 underline-offset-4 hover:text-ink"
+                  >
+                    Kill switch
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      function NavLink({ children, active, onClick }) {
+        return (
+          <button
+            onClick={onClick}
+            className={
+              "px-3 py-1.5 rounded-full transition " +
+              (active
+                ? "bg-ink text-paper"
+                : "text-ink/70 hover:text-ink hover:bg-vellum")
+            }
+          >
+            {children}
+          </button>
+        );
+      }
+
+      function Home({ onNav }) {
+        return (
+          <div className="dawn-glow">
+            <section className="max-w-6xl mx-auto px-6 pt-20 pb-28">
+              <p className="settle text-xs uppercase tracking-[0.22em] text-ink/55">
+                Cross-generational emotional continuity infrastructure
+              </p>
+              <h1 className="settle font-serif text-[44px] sm:text-[64px] leading-[1.05] mt-6 max-w-3xl">
+                The moments you won't be there for,
+                <span className="block italic text-ink/85">still arrive.</span>
+              </h1>
+              <p className="settle-slow max-w-2xl mt-7 text-lg text-ink/75 leading-relaxed">
+                Glimpse helps you author voice, writing, and small physical gestures —
+                and releases them on the days that mattered to you. Your daughter's wedding.
+                The morning after a hard one. A first home. A first child.
+              </p>
+              <p className="settle-slow max-w-2xl mt-4 text-base text-ink/55">
+                Scheduled by you. Welcomed by them. Reviewed by a human. Stoppable at any time.
+              </p>
+
+              <div className="settle-slow mt-10 flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => onNav(NAV.BEGIN)}
+                  className="px-5 py-3 rounded-full bg-ink text-paper text-sm tracking-wide hover:bg-deep transition"
+                >
+                  Begin a Vault
+                </button>
+                <button
+                  onClick={() => onNav(NAV.VAULT)}
+                  className="px-5 py-3 rounded-full text-sm text-ink/85 border border-ink/15 hover:border-ink/40 transition bg-vellum"
+                >
+                  See how it works
+                </button>
+              </div>
+            </section>
+
+            <section className="max-w-6xl mx-auto px-6 pb-24">
+              <div className="brass-line mb-12" />
+              <div className="grid sm:grid-cols-3 gap-10">
+                <Pillar
+                  k="Author"
+                  title="Write the toast you'll miss."
+                  body="Voice, letters, recipes, small physical gestures — gathered with the care of an archive, not an app."
+                />
+                <Pillar
+                  k="Schedule"
+                  title="On the day you chose."
+                  body="A wedding morning. A first home. The week a new mother comes home. The day after a hard one."
+                />
+                <Pillar
+                  k="Welcome"
+                  title="Only if they want it."
+                  body="The recipient can welcome, pause, or close — on a single tap. A human reads everything before it leaves."
+                />
+              </div>
+            </section>
+
+            <section className="max-w-6xl mx-auto px-6 pb-32">
+              <div className="hairline mb-12" />
+              <blockquote className="font-serif text-2xl sm:text-3xl leading-snug max-w-3xl text-ink/90">
+                Glimpse does not remake a person.
+                <span className="block italic text-ink/65 mt-2">
+                  It remakes the experience of being loved by them — with consent, dignity, timing, and care.
+                </span>
+              </blockquote>
+            </section>
+          </div>
+        );
+      }
+
+      function Pillar({ k, title, body }) {
+        return (
+          <div className="settle">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-brass">{k}</p>
+            <h3 className="font-serif text-xl mt-3 leading-snug">{title}</h3>
+            <p className="text-ink/70 mt-3 leading-relaxed text-[15px]">{body}</p>
+          </div>
+        );
+      }
+
+      function Begin({ onComplete, onCancel }) {
+        const [step, setStep] = useState(0);
+        const [form, setForm] = useState({
+          recipient: "",
+          relationship: "Daughter",
+          moment: "On her wedding morning",
+          customMoment: "",
+          message: "",
+          when: "April 14, 2042",
+          channel: "Voice + linen-bound box",
+        });
+
+        const moments = [
+          "On her wedding morning",
+          "First child, first morning home",
+          "Eighteenth birthday",
+          "Morning after a hard one",
+          "Custom moment",
+        ];
+        const channels = [
+          "Voice + linen-bound box",
+          "Letter, by post",
+          "Voice note only",
+          "Small physical object",
+        ];
+
+        const update = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+
+        function canNext() {
+          if (step === 0) return form.recipient.trim().length > 0;
+          if (step === 1) return form.moment !== "Custom moment" || form.customMoment.trim().length > 2;
+          if (step === 2) return form.message.trim().length > 8;
+          if (step === 3) return form.when.trim().length > 0;
+          return true;
+        }
+
+        const steps = [
+          {
+            kicker: "Step one of four",
+            title: "Who are you authoring for?",
+            body: "Name the person and the relationship. Glimpse will never refer to them generically.",
+            content: (
+              <div className="space-y-4 max-w-md">
+                <Field label="Their name">
+                  <input
+                    value={form.recipient}
+                    onChange={update("recipient")}
+                    placeholder="Maya"
+                    className="focus-ring w-full bg-vellum border border-ink/10 rounded-lg px-4 py-3 text-ink placeholder:text-ink/30"
+                  />
+                </Field>
+                <Field label="Your relationship">
+                  <select
+                    value={form.relationship}
+                    onChange={update("relationship")}
+                    className="focus-ring w-full bg-vellum border border-ink/10 rounded-lg px-4 py-3 text-ink"
+                  >
+                    {["Daughter","Son","Granddaughter","Grandson","Partner","Sibling","Friend","Other"].map((r) => (
+                      <option key={r}>{r}</option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+            ),
+          },
+          {
+            kicker: "Step two of four",
+            title: "Which moment are you authoring?",
+            body: "Choose a moment you might not be there for. You can author as many as you like, on your own time.",
+            content: (
+              <div className="space-y-3 max-w-md">
+                {moments.map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setForm({ ...form, moment: m })}
+                    className={
+                      "w-full text-left px-4 py-3 rounded-lg border transition " +
+                      (form.moment === m
+                        ? "border-brass bg-vellum"
+                        : "border-ink/10 hover:border-ink/30 bg-vellum/60")
+                    }
+                  >
+                    <span className="font-serif text-[17px]">{m}</span>
+                  </button>
+                ))}
+                {form.moment === "Custom moment" && (
+                  <Field label="Describe the moment">
+                    <input
+                      value={form.customMoment}
+                      onChange={update("customMoment")}
+                      placeholder="The week she comes home from the hospital with a baby"
+                      className="focus-ring w-full bg-vellum border border-ink/10 rounded-lg px-4 py-3 text-ink placeholder:text-ink/30"
+                    />
+                  </Field>
+                )}
+              </div>
+            ),
+          },
+          {
+            kicker: "Step three of four",
+            title: "Write what you would say.",
+            body: "Write in your own voice. Don't perform. Don't conclude. Write as if you were sitting in the room.",
+            content: (
+              <div className="max-w-2xl">
+                <textarea
+                  value={form.message}
+                  onChange={update("message")}
+                  rows={10}
+                  placeholder="Maya — if you're reading this, then today is the day…"
+                  className="focus-ring w-full bg-vellum border border-ink/10 rounded-lg px-5 py-4 text-ink leading-relaxed author-script text-lg"
+                />
+                <p className="text-xs text-ink/50 mt-2">
+                  Nothing is sent until a human reads this back to you.
+                </p>
+              </div>
+            ),
+          },
+          {
+            kicker: "Step four of four",
+            title: "When should it arrive?",
+            body: "Choose a date, or a condition. Maya can welcome it, pause it, or close it at any time.",
+            content: (
+              <div className="space-y-4 max-w-md">
+                <Field label="Scheduled for">
+                  <input
+                    value={form.when}
+                    onChange={update("when")}
+                    className="focus-ring w-full bg-vellum border border-ink/10 rounded-lg px-4 py-3 text-ink"
+                  />
+                </Field>
+                <Field label="Channel">
+                  <select
+                    value={form.channel}
+                    onChange={update("channel")}
+                    className="focus-ring w-full bg-vellum border border-ink/10 rounded-lg px-4 py-3 text-ink"
+                  >
+                    {channels.map((c) => <option key={c}>{c}</option>)}
+                  </select>
+                </Field>
+              </div>
+            ),
+          },
+        ];
+
+        const s = steps[step];
+
+        return (
+          <section className="max-w-6xl mx-auto px-6 pt-16 pb-28 settle">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-brass">{s.kicker}</p>
+            <h2 className="font-serif text-3xl sm:text-4xl mt-3 leading-tight max-w-3xl">{s.title}</h2>
+            <p className="text-ink/65 mt-3 max-w-2xl leading-relaxed">{s.body}</p>
+            <div className="mt-10">{s.content}</div>
+
+            <div className="brass-line mt-16 mb-6" />
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => (step === 0 ? onCancel() : setStep(step - 1))}
+                className="text-sm text-ink/60 hover:text-ink"
+              >
+                {step === 0 ? "Cancel" : "Back"}
+              </button>
+              <div className="flex items-center gap-3">
+                {[0,1,2,3].map((i) => (
+                  <span
+                    key={i}
+                    className={"w-1.5 h-1.5 rounded-full " + (i <= step ? "bg-brass" : "bg-ink/15")}
+                  />
+                ))}
+                <button
+                  disabled={!canNext()}
+                  onClick={() => (step === 3 ? onComplete(form) : setStep(step + 1))}
+                  className={
+                    "ml-4 px-5 py-3 rounded-full text-sm tracking-wide transition " +
+                    (canNext()
+                      ? "bg-ink text-paper hover:bg-deep"
+                      : "bg-ink/20 text-paper/70 cursor-not-allowed")
+                  }
+                >
+                  {step === 3 ? "Hand to human review" : "Continue"}
+                </button>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      function Field({ label, children }) {
+        return (
+          <label className="block">
+            <span className="text-xs uppercase tracking-[0.2em] text-ink/55">{label}</span>
+            <div className="mt-2">{children}</div>
+          </label>
+        );
+      }
+
+      function Vault({ glimpses, onPreviewDelivery, onPause, onClose }) {
+        return (
+          <section className="max-w-6xl mx-auto px-6 pt-16 pb-28">
+            <div className="settle flex items-end justify-between flex-wrap gap-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.24em] text-brass">The Vault</p>
+                <h2 className="font-serif text-3xl sm:text-4xl mt-3 leading-tight">Authored, scheduled, awaiting welcome.</h2>
+              </div>
+              <p className="text-sm text-ink/55 max-w-xs">
+                Steward view. Every entry can be paused, rescheduled, or closed — without explanation.
+              </p>
+            </div>
+
+            <div className="brass-line my-10" />
+
+            <ul className="space-y-4">
+              {glimpses.map((g) => (
+                <li
+                  key={g.id}
+                  className="settle bg-vellum rounded-2xl border border-ink/10 px-6 py-5 shadow-vellum"
+                >
+                  <div className="flex items-start justify-between gap-6 flex-wrap">
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase tracking-[0.22em] text-ink/50">
+                        For {g.recipient} · {g.relationship}
+                      </p>
+                      <h3 className="font-serif text-2xl mt-2 leading-snug">{g.moment}</h3>
+                      <p className="text-sm text-ink/60 mt-2">
+                        Scheduled for <span className="text-ink/80">{g.scheduledFor}</span>
+                        <span className="text-ink/30"> · </span>
+                        From <span className="text-ink/80">{g.author}</span>
+                        <span className="text-ink/30"> · </span>
+                        <span className="text-ink/80">{g.channel}</span>
+                      </p>
+                      <p className="mt-4 text-ink/80 leading-relaxed line-clamp-3 max-w-2xl author-script">
+                        "{g.message}"
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-2 shrink-0">
+                      <span className="inline-flex items-center gap-2 text-xs text-pulse">
+                        <span className="w-1.5 h-1.5 bg-pulse rounded-full" />
+                        {g.status}
+                      </span>
+                      <div className="flex items-center gap-2 mt-2">
+                        <button
+                          onClick={() => onPreviewDelivery(g)}
+                          className="px-3 py-2 text-xs rounded-full bg-ink text-paper hover:bg-deep"
+                        >
+                          Preview delivery
+                        </button>
+                        <button
+                          onClick={() => onPause(g.id)}
+                          className="px-3 py-2 text-xs rounded-full border border-ink/15 hover:border-ink/40 text-ink/80"
+                        >
+                          Pause
+                        </button>
+                        <button
+                          onClick={() => onClose(g.id)}
+                          className="px-3 py-2 text-xs rounded-full border border-ink/15 hover:border-ink/40 text-ink/80"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      }
+
+      function Recipient({ next, onWelcome, onNotToday, onClose }) {
+        return (
+          <section className="max-w-3xl mx-auto px-6 pt-20 pb-28">
+            <div className="settle">
+              <p className="text-[10px] uppercase tracking-[0.24em] text-brass">For {next.recipient}</p>
+              <h2 className="font-serif text-3xl sm:text-4xl mt-3 leading-tight">
+                Your {next.author.toLowerCase()} chose this morning.
+              </h2>
+              <p className="text-ink/65 mt-3 leading-relaxed">
+                A Glimpse from {next.author} — authored on {next.authoredOn}, scheduled to reach you on{" "}
+                <span className="text-ink">{next.scheduledFor}</span>.
+                A human at Glimpse has read it back and confirmed it is what they authored.
+              </p>
+            </div>
+
+            <div className="brass-line my-10" />
+
+            <div className="settle-slow bg-vellum rounded-2xl border border-ink/10 px-7 py-8 shadow-vellum">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-ink/55">{next.moment}</p>
+              <p className="author-script text-xl sm:text-[22px] leading-relaxed mt-4 text-ink/90">
+                "{next.message.slice(0, 220)}{next.message.length > 220 ? "…" : ""}"
+              </p>
+              <div className="hairline my-7" />
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={onWelcome}
+                  className="px-5 py-3 rounded-full bg-ink text-paper text-sm hover:bg-deep"
+                >
+                  Welcome this
+                </button>
+                <button
+                  onClick={onNotToday}
+                  className="px-5 py-3 rounded-full bg-vellum border border-ink/15 hover:border-ink/40 text-sm"
+                >
+                  Not today
+                </button>
+                <button
+                  onClick={onClose}
+                  className="px-5 py-3 rounded-full text-sm text-ink/60 hover:text-ink"
+                >
+                  Stop receiving
+                </button>
+              </div>
+              <p className="text-xs text-ink/50 mt-5">
+                Nothing changes about how {next.author} is remembered if you pause or close.
+                You can always reopen later, or hand stewardship to someone else.
+              </p>
+            </div>
+          </section>
+        );
+      }
+
+      function Delivery({ glimpse, onBack }) {
+        const [phase, setPhase] = useState(0);
+        useEffect(() => {
+          const t1 = setTimeout(() => setPhase(1), 900);
+          const t2 = setTimeout(() => setPhase(2), 2600);
+          const t3 = setTimeout(() => setPhase(3), 4800);
+          return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+        }, []);
+
+        return (
+          <div className="fixed inset-0 bg-paper z-50 overflow-y-auto">
+            <div className="dawn-glow min-h-full flex flex-col">
+              <div className="max-w-3xl mx-auto px-6 pt-16 pb-6 w-full flex items-center justify-between">
+                <button onClick={onBack} className="text-sm text-ink/50 hover:text-ink">
+                  ← Close preview
+                </button>
+                <p className="text-[10px] uppercase tracking-[0.22em] text-ink/50">
+                  Investor demo mode
+                </p>
+              </div>
+
+              <div className="flex-1 flex items-center">
+                <div className="max-w-3xl mx-auto px-6 py-10 w-full">
+                  {phase >= 0 && (
+                    <p className="settle text-[11px] uppercase tracking-[0.24em] text-brass">
+                      {glimpse.moment}
+                    </p>
+                  )}
+                  {phase >= 1 && (
+                    <p className="settle font-serif text-xl text-ink/65 mt-6">
+                      From {glimpse.author}, authored {glimpse.authoredOn}.
+                      <span className="block">Scheduled for {glimpse.scheduledFor}.</span>
+                    </p>
+                  )}
+                  {phase >= 2 && (
+                    <div className="settle-slow mt-10">
+                      <div className="brass-line mb-10" />
+                      <p className="author-script text-2xl sm:text-3xl leading-relaxed text-ink/90 max-w-2xl">
+                        "{glimpse.message}"
+                      </p>
+                      <div className="brass-line mt-10" />
+                    </div>
+                  )}
+                  {phase >= 3 && (
+                    <div className="settle mt-10 flex flex-wrap items-center gap-3">
+                      <button
+                        onClick={onBack}
+                        className="px-5 py-3 rounded-full bg-ink text-paper text-sm hover:bg-deep"
+                      >
+                        Mark as received
+                      </button>
+                      <button
+                        onClick={onBack}
+                        className="px-5 py-3 rounded-full border border-ink/15 hover:border-ink/40 text-sm bg-vellum"
+                      >
+                        Keep for later
+                      </button>
+                      <span className="text-xs text-ink/45 ml-2">
+                        You can re-open this Glimpse any time from your portal.
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="max-w-3xl mx-auto px-6 pb-12 w-full text-[11px] text-ink/45">
+                Reviewed by a human at Glimpse · Authored by {glimpse.author} · Stoppable in one tap
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      function Ethics({ onNav }) {
+        return (
+          <section className="max-w-3xl mx-auto px-6 pt-20 pb-28 settle">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-brass">How it stops</p>
+            <h2 className="font-serif text-3xl sm:text-4xl mt-3 leading-tight">
+              Four locks. No exception.
+            </h2>
+            <p className="text-ink/70 mt-4 leading-relaxed">
+              Every Glimpse is something the author chose, the recipient welcomed,
+              a human reviewed, and the system can stop. The kill switch is not buried
+              in settings. It is in the chrome of every screen.
+            </p>
+
+            <div className="brass-line my-10" />
+
+            <div className="space-y-7">
+              <Lock n="01" t="Authored by a real person">
+                Glimpse never invents words the author did not write. Every voice clip,
+                every letter, every gesture is something a real human sat down and made,
+                intending it for the moment it arrives.
+              </Lock>
+              <Lock n="02" t="Welcomed by the recipient">
+                The recipient can welcome, pause, or close any Glimpse. They can hand
+                stewardship to someone else. Nothing arrives at someone who has not, in
+                advance, said yes to receiving it.
+              </Lock>
+              <Lock n="03" t="Reviewed by a human">
+                Before any Glimpse leaves the vault, a trained human at Glimpse reads
+                it back. We hold a small, careful review queue. The author can revise.
+                The recipient can opt out. The system holds.
+              </Lock>
+              <Lock n="04" t="Stoppable at any time">
+                One tap pauses. Another closes. The contract is not forever — every
+                family can wind it down without explanation, without penalty, and
+                without losing the underlying material.
+              </Lock>
+            </div>
+
+            <div className="brass-line my-12" />
+
+            <blockquote className="font-serif text-xl sm:text-2xl leading-snug text-ink/90 max-w-2xl">
+              Glimpse does not remake a person.
+              <span className="block italic text-ink/65 mt-2">
+                It remakes the experience of being loved by them — with consent, dignity, timing, and care.
+              </span>
+            </blockquote>
+
+            <div className="mt-10">
+              <button
+                onClick={() => onNav(NAV.HOME)}
+                className="text-sm underline decoration-brass/60 underline-offset-4 hover:text-ink"
+              >
+                Return home
+              </button>
+            </div>
+          </section>
+        );
+      }
+
+      function Lock({ n, t, children }) {
+        return (
+          <div className="settle">
+            <div className="flex items-baseline gap-4">
+              <span className="text-brass text-sm tracking-widest">{n}</span>
+              <h4 className="font-serif text-xl">{t}</h4>
+            </div>
+            <p className="text-ink/70 mt-2 leading-relaxed pl-10">{children}</p>
+          </div>
+        );
+      }
+
+      function App() {
+        const [nav, setNav] = useState(NAV.HOME);
+        const [glimpses, setGlimpses] = useState(SEED_GLIMPSES);
+        const [delivery, setDelivery] = useState(null);
+
+        function handleComplete(form) {
+          const newGlimpse = {
+            id: "g-" + Math.random().toString(36).slice(2, 7),
+            recipient: form.recipient,
+            relationship: form.relationship,
+            moment: form.moment === "Custom moment" ? form.customMoment : form.moment,
+            scheduledFor: form.when,
+            status: "Under human review",
+            author: "You",
+            authoredOn: "Today",
+            channel: form.channel,
+            message: form.message,
+          };
+          setGlimpses([newGlimpse, ...glimpses]);
+          setNav(NAV.VAULT);
+        }
+
+        function pause(id) {
+          setGlimpses(glimpses.map((g) => g.id === id ? { ...g, status: "Paused" } : g));
+        }
+        function close(id) {
+          setGlimpses(glimpses.filter((g) => g.id !== id));
+        }
+
+        const recipientNext = useMemo(() => glimpses[0], [glimpses]);
+
+        return (
+          <div className="min-h-screen">
+            <TopBar onNav={setNav} current={nav} killBarHidden={!!delivery} />
+            {nav === NAV.HOME && <Home onNav={setNav} />}
+            {nav === NAV.BEGIN && (
+              <Begin onComplete={handleComplete} onCancel={() => setNav(NAV.HOME)} />
+            )}
+            {nav === NAV.VAULT && (
+              <Vault
+                glimpses={glimpses}
+                onPreviewDelivery={(g) => setDelivery(g)}
+                onPause={pause}
+                onClose={close}
+              />
+            )}
+            {nav === NAV.RECIPIENT && recipientNext && (
+              <Recipient
+                next={recipientNext}
+                onWelcome={() => setDelivery(recipientNext)}
+                onNotToday={() => setNav(NAV.HOME)}
+                onClose={() => { close(recipientNext.id); setNav(NAV.HOME); }}
+              />
+            )}
+            {nav === NAV.ETHICS && <Ethics onNav={setNav} />}
+            {delivery && <Delivery glimpse={delivery} onBack={() => setDelivery(null)} />}
+            <footer className="border-t border-ink/10 bg-paper">
+              <div className="max-w-6xl mx-auto px-6 py-8 text-[11px] text-ink/45 flex items-center justify-between">
+                <span>Glimpse · Cross-generational emotional continuity infrastructure</span>
+                <span>Prototype · For demonstration only</span>
+              </div>
+            </footer>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
