@@ -1,0 +1,22 @@
+{
+  "$comment": [
+    "Your active BOLD projects. The digest job re-reads this every run and",
+    "recomputes the countdown + status chip from `date`, so the only thing you",
+    "ever need to edit is this file (then redeploy, or push — Vercel rebuilds).",
+    "",
+    "  id    unique, stable slug. Changing it re-suggests the project's task.",
+    "  title what shows in the timeline.",
+    "  date  YYYY-MM-DD of the event / deadline. Omit or null if not set yet.",
+    "  when  optional human date range; derived from `date` when omitted.",
+    "  note  one line of context — what actually needs to happen next."
+  ],
+  "projects": [
+    {
+      "id": "example-launch",
+      "title": "השקה לדוגמה — החלף אותי",
+      "date": null,
+      "when": "טרם נקבע",
+      "note": "זו רשומת דוגמה. ערוך את data/projects.json ומלא את הפרויקטים הפעילים שלך."
+    }
+  ]
+}

@@ -1,0 +1,641 @@
+<title>יומן BOLD</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;800&family=Rubik:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#F2F1EC;
+    --surface:#FFFFFF;
+    --surface-sunken:#EAE8E1;
+    --ink:#201D1A;
+    --ink-soft:#5B564F;
+    --ink-faint:#8B857A;
+    --line:#DAD6CC;
+    --accent:#2B5D63;
+    --accent-soft:#DCE7E6;
+    --good:#3F7D4F;
+    --good-soft:#E2EFE2;
+    --warn:#A8752A;
+    --warn-soft:#F5EBD8;
+    --critical:#AC3B34;
+    --critical-soft:#F7E1DE;
+    --water:#3E7C9E;
+    --water-soft:#DCEAF1;
+    --pill:#7A5A8C;
+    --pill-soft:#EBE1F0;
+    --teeth:#3E7C7A;
+    --teeth-soft:#DCEEEC;
+    --clean:#4C8C5C;
+    --clean-soft:#E4F1E6;
+    --shadow: 0 1px 2px rgba(32,29,26,0.06), 0 8px 24px -12px rgba(32,29,26,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17181A; --surface:#1F2124; --surface-sunken:#26282B;
+      --ink:#EDEBE6; --ink-soft:#B3AEA3; --ink-faint:#7D7A72; --line:#34373A;
+      --accent:#7CBFC3; --accent-soft:#233234;
+      --good:#7AC488; --good-soft:#1F2E23;
+      --warn:#E3B563; --warn-soft:#332A1B;
+      --critical:#E37D77; --critical-soft:#332321;
+      --water:#7FB6D9; --water-soft:#1E2C36;
+      --pill:#C9A6DC; --pill-soft:#2C2433;
+      --teeth:#7FC7C3; --teeth-soft:#1C2C2A;
+      --clean:#8FCC9E; --clean-soft:#1E2E21;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17181A; --surface:#1F2124; --surface-sunken:#26282B;
+    --ink:#EDEBE6; --ink-soft:#B3AEA3; --ink-faint:#7D7A72; --line:#34373A;
+    --accent:#7CBFC3; --accent-soft:#233234;
+    --good:#7AC488; --good-soft:#1F2E23;
+    --warn:#E3B563; --warn-soft:#332A1B;
+    --critical:#E37D77; --critical-soft:#332321;
+    --water:#7FB6D9; --water-soft:#1E2C36;
+    --pill:#C9A6DC; --pill-soft:#2C2433;
+    --teeth:#7FC7C3; --teeth-soft:#1C2C2A;
+    --clean:#8FCC9E; --clean-soft:#1E2E21;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink); direction:rtl;
+    font-family:'Rubik',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1160px;margin:0 auto;padding:36px 24px 64px;}
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  input{direction:rtl;}
+
+  .masthead{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    padding-bottom:20px; margin-bottom:24px; border-bottom:2px solid var(--ink);
+    flex-wrap:wrap;
+  }
+  .masthead h1{
+    font-family:'Frank Ruhl Libre',system-ui,serif;
+    font-weight:800; font-size:clamp(1.9rem,4.6vw,2.7rem); line-height:1.15;
+    margin:0; text-wrap:balance;
+  }
+  .masthead .sub{font-size:0.95rem; color:var(--ink-soft); margin-top:6px; max-width:50ch;}
+  .meta{
+    text-align:end; font-family:'IBM Plex Mono',monospace; font-size:0.76rem;
+    color:var(--ink-faint); line-height:1.7; white-space:nowrap; direction:ltr;
+  }
+  .meta .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--good);margin-inline-end:6px;}
+  .meta .dot.off{background:var(--ink-faint);}
+
+  /* ---- Check-in strip ---- */
+  .checkin-strip{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin-bottom:22px;}
+  .check-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:12px;
+    box-shadow:var(--shadow); padding:16px 18px; display:flex; align-items:center; gap:14px;
+  }
+  .check-icon{
+    width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .check-icon svg{width:21px; height:21px;}
+  .check-body{flex:1; min-width:0;}
+  .check-label{
+    font-family:'Frank Ruhl Libre',system-ui,serif; font-weight:700; font-size:1.12rem;
+    margin:0 0 2px;
+  }
+  .check-sub{font-size:0.78rem; color:var(--ink-faint); margin:0;}
+
+  .pill-btn{
+    border:1.5px solid var(--line); background:var(--surface-sunken); color:var(--ink-soft);
+    font-weight:600; font-size:0.8rem; padding:8px 14px; border-radius:99px; cursor:pointer;
+    transition:all 0.15s ease; white-space:nowrap;
+  }
+  .pill-btn:hover{border-color:var(--pill);}
+  .pill-btn.done{background:var(--pill-soft); border-color:var(--pill); color:var(--pill);}
+
+  .teeth-toggles{display:flex; gap:6px;}
+  .teeth-btn{
+    border:1.5px solid var(--line); background:var(--surface-sunken); color:var(--ink-soft);
+    font-weight:600; font-size:0.76rem; padding:7px 11px; border-radius:99px; cursor:pointer;
+  }
+  .teeth-btn.done{background:var(--teeth-soft); border-color:var(--teeth); color:var(--teeth);}
+
+  .clean-btn{
+    border:1.5px solid var(--line); background:var(--surface-sunken); color:var(--ink-soft);
+    font-weight:600; font-size:0.8rem; padding:8px 14px; border-radius:99px; cursor:pointer; white-space:nowrap;
+  }
+  .clean-btn.done{background:var(--clean-soft); border-color:var(--clean); color:var(--clean);}
+
+  .water-widget{display:flex; align-items:center; gap:3px;}
+  .drop-btn{
+    width:24px; height:24px; border:none; background:none; cursor:pointer; padding:0;
+    display:flex; align-items:center; justify-content:center; border-radius:6px;
+  }
+  .drop-btn:hover{background:var(--water-soft);}
+  .drop-btn svg{width:19px; height:19px;}
+
+  .grid{display:grid; grid-template-columns:1.3fr 1fr; gap:22px;}
+  @media (max-width:900px){ .grid{grid-template-columns:1fr;} }
+  .col{display:flex; flex-direction:column; gap:22px;}
+
+  .panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:10px;
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .panel-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+    padding:16px 20px 12px; border-bottom:1px solid var(--line);
+  }
+  .panel-head h2{
+    font-family:'Frank Ruhl Libre',system-ui,serif; font-weight:700;
+    font-size:1.28rem; margin:0;
+  }
+  .panel-head .count{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-faint); direction:ltr;}
+
+  /* ---- Calendar mini ---- */
+  .cal-mini{padding:6px 20px 16px;}
+  .cal-row{display:flex; align-items:baseline; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:0.88rem;}
+  .cal-row:last-child{border-bottom:none;}
+  .cal-time{font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--accent); direction:ltr; white-space:nowrap;}
+  .cal-empty{font-size:0.85rem; color:var(--ink-faint); padding:4px 0; line-height:1.6;}
+
+  /* ---- Missions ---- */
+  .missions{padding:8px 20px 16px;}
+  .mission-group h3{
+    font-family:'Frank Ruhl Libre',system-ui,serif; font-size:0.92rem; font-weight:700;
+    color:var(--ink-soft); margin:10px 0 4px; text-transform:none;
+  }
+  .mission-group:first-child h3{margin-top:0;}
+  .task-row{display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px solid var(--line);}
+  .task-row:last-child{border-bottom:none;}
+  .task-check{
+    width:19px; height:19px; border-radius:5px; border:1.5px solid var(--line); background:var(--surface);
+    flex-shrink:0; margin-top:2px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .task-check.checked{background:var(--accent); border-color:var(--accent);}
+  .task-check svg{width:12px; height:12px; opacity:0;}
+  .task-check.checked svg{opacity:1;}
+  .task-text{flex:1; font-size:0.9rem; line-height:1.45; padding-top:1px;}
+  .task-text.checked{color:var(--ink-faint); text-decoration:line-through;}
+  .task-src{
+    font-size:0.6rem; color:var(--ink-faint); background:var(--surface-sunken); padding:2px 6px;
+    border-radius:5px; margin-inline-start:6px; white-space:nowrap; vertical-align:middle;
+  }
+  .task-del{background:none; border:none; color:var(--ink-faint); cursor:pointer; font-size:1rem; padding:0 4px; flex-shrink:0;}
+  .task-add{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
+  .task-add input{
+    flex:1; min-width:140px; border:1px solid var(--line); background:var(--surface-sunken); color:var(--ink);
+    border-radius:7px; padding:8px 12px; font-size:0.87rem; font-family:inherit;
+  }
+  .task-add-btns{display:flex; gap:6px;}
+  .task-add button{
+    border:none; background:var(--accent); color:var(--surface); font-weight:600; font-size:0.8rem;
+    padding:8px 12px; border-radius:7px; cursor:pointer; white-space:nowrap;
+  }
+  .task-add button.alt{background:var(--surface-sunken); color:var(--ink-soft); border:1px solid var(--line);}
+  .task-empty{font-size:0.85rem; color:var(--ink-faint); padding:6px 0;}
+
+  /* ---- Timeline ---- */
+  .timeline{padding:4px 20px 14px;}
+  .titem{display:grid; grid-template-columns:1fr 58px; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);}
+  .titem:last-child{border-bottom:none;}
+  .tdays{font-family:'IBM Plex Mono',monospace; text-align:center; padding-top:2px; direction:ltr;}
+  .tdays .n{display:block; font-size:1.3rem; font-weight:600; line-height:1;}
+  .tdays .u{display:block; font-size:0.56rem; color:var(--ink-faint); margin-top:3px;}
+  .tbody h3{font-size:0.98rem; margin:0 0 3px; font-weight:600; text-wrap:balance;}
+  .tbody .when{font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-faint); margin-bottom:5px; direction:ltr; unicode-bidi:plaintext;}
+  .tbody p{margin:0; font-size:0.85rem; color:var(--ink-soft); line-height:1.55;}
+  .chip{
+    display:inline-flex; align-items:center; gap:5px; font-size:0.66rem; font-weight:600;
+    padding:3px 9px; border-radius:99px; margin-bottom:5px;
+  }
+  .chip.urgent{background:var(--critical-soft); color:var(--critical);}
+  .chip.soon{background:var(--warn-soft); color:var(--warn);}
+  .chip.track{background:var(--good-soft); color:var(--good);}
+  .chip.watch{background:var(--accent-soft); color:var(--accent);}
+
+  /* ---- Inbox ---- */
+  .inbox{padding:4px 20px 14px;}
+  .iitem{padding:12px 0; border-bottom:1px solid var(--line);}
+  .iitem:last-child{border-bottom:none;}
+  .irow{display:flex; justify-content:space-between; gap:10px; align-items:baseline;}
+  .irow .who{font-weight:600; font-size:0.92rem;}
+  .irow .age{font-family:'IBM Plex Mono',monospace; font-size:0.66rem; color:var(--ink-faint); white-space:nowrap; direction:ltr;}
+  .isubject{font-size:0.8rem; color:var(--ink-faint); margin:2px 0 5px; font-style:italic;}
+  .iask{font-size:0.85rem; color:var(--ink-soft); line-height:1.55; margin:0;}
+  .iask b{color:var(--ink); font-weight:600;}
+  .noise{margin-top:2px; padding:12px 20px 14px; font-size:0.8rem; color:var(--ink-faint); border-top:1px dashed var(--line); line-height:1.6;}
+
+  .footnote{
+    margin-top:22px; padding:16px 20px; background:var(--surface-sunken);
+    border:1px dashed var(--line); border-radius:10px; font-size:0.82rem;
+    color:var(--ink-soft); line-height:1.7;
+  }
+  .footnote b{color:var(--ink);}
+  a{color:var(--accent);}
+  .sync-note{font-size:0.72rem; color:var(--ink-faint); text-align:center; margin-top:14px;}
+</style>
+
+<div class="wrap" dir="rtl" lang="he">
+
+  <div class="masthead">
+    <div>
+      <h1 id="greeting">בוקר טוב, קאי</h1>
+      <div class="sub">כדורים, מים, שיניים, יום נקי, המשימות של היום, הדואר והפרויקטים — הכול במקום אחד.</div>
+    </div>
+    <div class="meta">
+      <div><span class="dot" id="sync-dot"></span><span id="sync-label">מתחבר&hellip;</span></div>
+      <div id="refreshed-line">עודכן לאחרונה &mdash; &mdash;</div>
+    </div>
+  </div>
+
+  <div class="checkin-strip">
+
+    <div class="check-card">
+      <div class="check-icon" style="background:var(--pill-soft)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--pill)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="9" width="18" height="9" rx="4.5" transform="rotate(-35 12 13)"/>
+          <line x1="12" y1="6" x2="12" y2="20" transform="rotate(-35 12 13)"/>
+        </svg>
+      </div>
+      <div class="check-body">
+        <p class="check-label">כדורים</p>
+        <p class="check-sub" id="pill-sub">עדיין לא סומן היום</p>
+      </div>
+      <button class="pill-btn" id="pill-btn">סמן שנלקח</button>
+    </div>
+
+    <div class="check-card">
+      <div class="check-icon" style="background:var(--water-soft)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--water)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.5s6.5 7.2 6.5 12A6.5 6.5 0 0 1 5.5 14.5c0-4.8 6.5-12 6.5-12z"/>
+        </svg>
+      </div>
+      <div class="check-body">
+        <p class="check-label">מים</p>
+        <p class="check-sub" id="water-sub">0 מתוך 8 כוסות</p>
+      </div>
+      <div class="water-widget" id="water-widget"></div>
+    </div>
+
+    <div class="check-card">
+      <div class="check-icon" style="background:var(--teeth-soft)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--teeth)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3c-2.5 0-4 2-4 5 0 4 1 11 3 11 1.6 0 1.7-4 2.5-4S11 19 12.5 19c1.5 0 1.7-4 3-4 2 0 3-7 3-11 0-3-1.5-5-4-5-1.5 0-2 1-2.5 1S9.5 3 8 3z"/>
+        </svg>
+      </div>
+      <div class="check-body">
+        <p class="check-label">צחצוח שיניים</p>
+        <p class="check-sub" id="teeth-sub">0/2 היום</p>
+      </div>
+      <div class="teeth-toggles">
+        <button class="teeth-btn" id="teeth-am-btn">בוקר</button>
+        <button class="teeth-btn" id="teeth-pm-btn">ערב</button>
+      </div>
+    </div>
+
+    <div class="check-card">
+      <div class="check-icon" style="background:var(--clean-soft)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--clean)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c-4-2.2-7-5.7-7-10 0-3 2-6 7-8 5 2 7 5 7 8 0 4.3-3 7.8-7 10z"/>
+          <path d="M12 16V8"/><path d="M9 11l3-3 3 3"/>
+        </svg>
+      </div>
+      <div class="check-body">
+        <p class="check-label">יום נקי</p>
+        <p class="check-sub" id="clean-sub">&nbsp;</p>
+      </div>
+      <button class="clean-btn" id="clean-btn">סמן יום נקי</button>
+    </div>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="col">
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>היום ומחר</h2>
+          <span class="count" id="cal-count">&mdash;</span>
+        </div>
+        <div class="cal-mini" id="cal-body">
+          <p class="cal-empty">היומן עוד לא מחובר לצ'אט הזה. אפשר להפעיל את Google Calendar בהגדרות החיבורים כדי שהאירועים האמיתיים יופיעו כאן.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>משימות</h2>
+          <span class="count" id="mission-count">&mdash;</span>
+        </div>
+        <div class="missions">
+          <div id="task-list"></div>
+          <div class="task-add">
+            <input type="text" id="task-input" placeholder="הוסף משהו לרשימה&hellip;" maxlength="140">
+            <div class="task-add-btns">
+              <button id="task-add-work">להוסיף לעבודה</button>
+              <button class="alt" id="task-add-personal">להוסיף לאישי</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>ציר הפרויקטים</h2>
+          <span class="count" id="timeline-count">&mdash;</span>
+        </div>
+        <div class="timeline" id="timeline-body">
+          <p class="task-empty">טוען&hellip;</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>אותות מהדואר</h2>
+          <span class="count" id="inbox-count">&mdash;</span>
+        </div>
+        <div class="inbox" id="inbox-body">
+          <p class="task-empty">טוען&hellip;</p>
+        </div>
+        <div class="noise" id="noise-line"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footnote">
+    <b>מה חי כאן:</b> כדורים, מים, שיניים ויום נקי — שלך לסמן, נשמר מיד ומתאפס עם כל יום חדש. המשימות הן רשימה אמיתית: חלק מוצעות אוטומטית מהדואר ומהפרויקטים, השאר מה שאתה מוסיף. ציר הפרויקטים ואותות מהדואר מתעדכנים אוטומטית לאורך היום מ-Gmail ומהערות הפרויקט שלך.
+    <br><br>
+    תגיד לי מה להחליף: כלי ניהול פרויקטים במקום ההערות שלי, מסננים אחרים לדואר, או יעד מים/כדורים שמתאים לך יותר — ואתעדכן.
+  </div>
+  <div class="sync-note" id="sync-note"></div>
+
+</div>
+
+<script>
+(function(){
+  const TZ = 'Asia/Jerusalem';
+  const WATER_TARGET = 8;
+
+  function todayKey(){
+    return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date());
+  }
+  function dayBefore(key, n){
+    const d = new Date(key + 'T12:00:00Z');
+    d.setUTCDate(d.getUTCDate() - n);
+    return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year:'numeric', month:'2-digit', day:'2-digit' }).format(d);
+  }
+  function greetingWord(){
+    const h = parseInt(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour:'2-digit', hour12:false }).format(new Date()), 10);
+    if (h < 5) return 'לילה טוב';
+    if (h < 12) return 'בוקר טוב';
+    if (h < 18) return 'צהריים טובים';
+    return 'ערב טוב';
+  }
+  document.getElementById('greeting').textContent = greetingWord() + ', קאי';
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function fmtRefreshed(iso){
+    if (!iso) return '&mdash; &mdash;';
+    try{
+      const d = new Date(iso);
+      const day = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, day:'2-digit', month:'2-digit', year:'numeric' }).format(d);
+      const time = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour:'2-digit', minute:'2-digit', hour12:false }).format(d);
+      return day + ' &middot; ' + time;
+    }catch(e){ return '&mdash;'; }
+  }
+
+  const pillBtn = document.getElementById('pill-btn');
+  const pillSub = document.getElementById('pill-sub');
+  const waterWidget = document.getElementById('water-widget');
+  const waterSub = document.getElementById('water-sub');
+  const teethAmBtn = document.getElementById('teeth-am-btn');
+  const teethPmBtn = document.getElementById('teeth-pm-btn');
+  const teethSub = document.getElementById('teeth-sub');
+  const cleanBtn = document.getElementById('clean-btn');
+  const cleanSub = document.getElementById('clean-sub');
+  const taskList = document.getElementById('task-list');
+  const missionCount = document.getElementById('mission-count');
+  const taskInput = document.getElementById('task-input');
+  const taskAddWork = document.getElementById('task-add-work');
+  const taskAddPersonal = document.getElementById('task-add-personal');
+  const timelineBody = document.getElementById('timeline-body');
+  const timelineCount = document.getElementById('timeline-count');
+  const inboxBody = document.getElementById('inbox-body');
+  const inboxCount = document.getElementById('inbox-count');
+  const noiseLine = document.getElementById('noise-line');
+  const calBody = document.getElementById('cal-body');
+  const calCount = document.getElementById('cal-count');
+  const syncDot = document.getElementById('sync-dot');
+  const syncLabel = document.getElementById('sync-label');
+  const refreshedLine = document.getElementById('refreshed-line');
+  const syncNote = document.getElementById('sync-note');
+
+  const DROP_FULL = '<svg viewBox="0 0 24 24" fill="var(--water)" stroke="none"><path d="M12 2.5s6.5 7.2 6.5 12A6.5 6.5 0 0 1 5.5 14.5c0-4.8 6.5-12 6.5-12z"/></svg>';
+  const DROP_EMPTY = '<svg viewBox="0 0 24 24" fill="none" stroke="var(--ink-faint)" stroke-width="1.6"><path d="M12 2.5s6.5 7.2 6.5 12A6.5 6.5 0 0 1 5.5 14.5c0-4.8 6.5-12 6.5-12z"/></svg>';
+
+  let waterCount = 0, pillsTaken = false, teethAm = false, teethPm = false, cleanToday = false;
+
+  function renderWater(){
+    let html = '';
+    for (let i = 0; i < WATER_TARGET; i++){
+      html += '<button class="drop-btn" data-i="' + i + '" aria-label="' + (i+1) + '">' + (i < waterCount ? DROP_FULL : DROP_EMPTY) + '</button>';
+    }
+    waterWidget.innerHTML = html;
+    waterSub.textContent = waterCount + (waterCount > WATER_TARGET ? '+' : '') + ' מתוך ' + WATER_TARGET + ' כוסות';
+    waterWidget.querySelectorAll('.drop-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const i = parseInt(btn.dataset.i, 10);
+        setWater((i + 1 === waterCount) ? i : i + 1);
+      });
+    });
+  }
+  function renderPills(){
+    pillBtn.classList.toggle('done', pillsTaken);
+    pillBtn.textContent = pillsTaken ? '✓ נלקח' : 'סמן שנלקח';
+    pillSub.textContent = pillsTaken ? 'נלקח היום' : 'עדיין לא סומן היום';
+  }
+  function renderTeeth(){
+    teethAmBtn.classList.toggle('done', teethAm);
+    teethPmBtn.classList.toggle('done', teethPm);
+    teethSub.textContent = ((teethAm?1:0)+(teethPm?1:0)) + '/2 היום';
+  }
+  function renderClean(){
+    cleanBtn.classList.toggle('done', cleanToday);
+    cleanBtn.textContent = cleanToday ? '✓ נקי היום' : 'סמן יום נקי';
+    computeStreak();
+  }
+  renderWater(); renderPills(); renderTeeth(); renderClean();
+
+  let checkinRef = null, checkinsCol = null;
+  function saveCheckin(){
+    if (!checkinRef) return;
+    checkinRef.set({ pills: pillsTaken, water: waterCount, teethAm: teethAm, teethPm: teethPm, clean: cleanToday, date: todayKey() }).catch(()=>{});
+  }
+  function setWater(n){ waterCount = Math.max(0, n); renderWater(); saveCheckin(); }
+  pillBtn.addEventListener('click', () => { pillsTaken = !pillsTaken; renderPills(); saveCheckin(); });
+  teethAmBtn.addEventListener('click', () => { teethAm = !teethAm; renderTeeth(); saveCheckin(); });
+  teethPmBtn.addEventListener('click', () => { teethPm = !teethPm; renderTeeth(); saveCheckin(); });
+  cleanBtn.addEventListener('click', () => { cleanToday = !cleanToday; renderClean(); saveCheckin(); });
+
+  function computeStreak(){
+    if (!checkinsCol){ cleanSub.innerHTML = '&nbsp;'; return; }
+    checkinsCol.orderBy('date', 'desc').limit(60).get().then(snap => {
+      const byDate = {};
+      snap.docs.forEach(d => { byDate[d.id] = d.data(); });
+      const today = todayKey();
+      let streak = 0;
+      let cursorIsToday = !!(byDate[today] && byDate[today].clean);
+      for (let i = cursorIsToday ? 0 : 1; i < 60; i++){
+        const key = dayBefore(today, i);
+        const rec = byDate[key];
+        if (rec && rec.clean) { streak++; } else { break; }
+      }
+      cleanSub.textContent = streak > 0 ? (streak + ' ימים ברצף') : 'התחלה חדשה, וזה בסדר';
+    }).catch(()=>{ cleanSub.innerHTML = '&nbsp;'; });
+  }
+
+  let tasksCol = null;
+  let liveTasks = [];
+  function taskRowHtml(t){
+    const checkedCls = t.done ? ' checked' : '';
+    return '<div class="task-row" data-id="' + t.id + '">' +
+      '<div class="task-check' + checkedCls + '" role="checkbox" aria-checked="' + t.done + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>' +
+      '</div>' +
+      '<div class="task-text' + checkedCls + '">' + escapeHtml(t.text) + (t.source === 'seed' ? '<span class="task-src">מוצע</span>' : '') + '</div>' +
+      '<button class="task-del" aria-label="מחיקה">&times;</button>' +
+    '</div>';
+  }
+  function renderTasks(){
+    if (!liveTasks.length){
+      taskList.innerHTML = '<p class="task-empty">אין כרגע כלום ברשימה. אפשר להוסיף למטה, או לבדוק שוב אחרי הריענון.</p>';
+      missionCount.textContent = '0 פתוחות';
+      return;
+    }
+    const work = liveTasks.filter(t => (t.category || 'work') === 'work');
+    const personal = liveTasks.filter(t => (t.category || 'work') === 'personal');
+    const openCount = liveTasks.filter(t => !t.done).length;
+    const doneCount = liveTasks.filter(t => t.done).length;
+    missionCount.textContent = openCount + ' פתוחות' + (doneCount ? ' &middot; ' + doneCount + ' בוצעו' : '');
+    function groupHtml(title, arr){
+      if (!arr.length) return '';
+      const sorted = [...arr].sort((a,b) => (a.done === b.done) ? 0 : (a.done ? 1 : -1));
+      return '<div class="mission-group"><h3>' + title + '</h3>' + sorted.map(taskRowHtml).join('') + '</div>';
+    }
+    taskList.innerHTML = groupHtml('עבודה', work) + groupHtml('אישי', personal);
+    taskList.querySelectorAll('.task-row').forEach(row => {
+      const id = row.dataset.id;
+      row.querySelector('.task-check').addEventListener('click', () => {
+        const t = liveTasks.find(x => x.id === id);
+        if (t && tasksCol) tasksCol.doc(id).update({ done: !t.done }).catch(()=>{});
+      });
+      row.querySelector('.task-del').addEventListener('click', () => {
+        if (tasksCol) tasksCol.doc(id).delete().catch(()=>{});
+      });
+    });
+  }
+  renderTasks();
+  function addTask(category){
+    const text = taskInput.value.trim();
+    if (!text || !tasksCol) return;
+    tasksCol.add({ text, done:false, source:'manual', category, createdAt: new Date().toISOString() }).catch(()=>{});
+    taskInput.value = '';
+  }
+  taskAddWork.addEventListener('click', () => addTask('work'));
+  taskAddPersonal.addEventListener('click', () => addTask('personal'));
+  taskInput.addEventListener('keydown', e => { if (e.key === 'Enter') addTask('work'); });
+
+  function renderTimeline(items){
+    if (!items || !items.length){
+      timelineBody.innerHTML = '<p class="task-empty">אין עדיין פרויקטים בתיק.</p>';
+      timelineCount.textContent = '&mdash;';
+      return;
+    }
+    timelineCount.textContent = items.length + ' פעילים &middot; לפי דחיפות';
+    timelineBody.innerHTML = items.map(p => {
+      const dayColor = p.chip === 'urgent' ? 'var(--critical)' : (p.chip === 'soon' ? 'var(--warn)' : (p.days == null ? 'var(--ink-faint)' : 'inherit'));
+      const n = p.days != null ? p.days : (p.daysLabel || '&middot;');
+      const u = p.days != null ? 'ימים' : (p.daysUnit || 'ללא תאריך');
+      return '<div class="titem">' +
+        '<div class="tbody">' +
+          '<span class="chip ' + (p.chip || 'watch') + '">' + escapeHtml(p.chipLabel || '') + '</span>' +
+          '<h3>' + p.title + '</h3>' +
+          '<div class="when">' + p.when + '</div>' +
+          '<p>' + p.note + '</p>' +
+        '</div>' +
+        '<div class="tdays" style="color:' + dayColor + '"><span class="n">' + n + '</span><span class="u">' + u + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderInbox(items, noise){
+    if (!items || !items.length){
+      inboxBody.innerHTML = '<p class="task-empty">כרגע שום דבר לא דורש מענה.</p>';
+      inboxCount.textContent = '&mdash;';
+    } else {
+      inboxCount.textContent = items.length + ' פריטים אמיתיים';
+      inboxBody.innerHTML = items.map(m => {
+        return '<div class="iitem"><div class="irow"><span class="who">' + escapeHtml(m.who) + '</span><span class="age">' + escapeHtml(m.age) + '</span></div>' +
+          (m.subject ? '<div class="isubject">' + m.subject + '</div>' : '') +
+          '<p class="iask">' + m.ask + '</p></div>';
+      }).join('');
+    }
+    noiseLine.textContent = noise || '';
+  }
+
+  function renderCalendar(events){
+    if (!events || !events.length){
+      calCount.textContent = '&mdash;';
+      return;
+    }
+    calCount.textContent = events.length + ' אירועים';
+    calBody.innerHTML = events.map(e => {
+      return '<div class="cal-row"><span class="cal-time">' + escapeHtml(e.time || '') + '</span><span>' + escapeHtml(e.title || '') + '</span></div>';
+    }).join('');
+  }
+
+  // ---- db wiring ----
+  claude.use('db').then(db => {
+    if (!db){
+      syncDot.classList.add('off');
+      syncLabel.textContent = 'אין סנכרון חי';
+      syncNote.textContent = 'התצוגה הזו לא מצליחה להתחבר לסנכרון חי, אז סימוני כדורים/מים/משימות לא יישמרו כאן. נסה לפתוח מחדש מתוך אפליקציית Claude.';
+      renderTimeline([]);
+      renderInbox([]);
+      return;
+    }
+    syncDot.classList.remove('off');
+    syncLabel.textContent = 'חי';
+
+    checkinsCol = db.collection('checkins');
+    checkinRef = checkinsCol.doc(todayKey());
+    checkinRef.onSnapshot(snap => {
+      const d = snap.exists ? snap.data() : {};
+      pillsTaken = !!d.pills; waterCount = d.water || 0; teethAm = !!d.teethAm; teethPm = !!d.teethPm; cleanToday = !!d.clean;
+      renderPills(); renderWater(); renderTeeth(); renderClean();
+    }, () => {});
+
+    tasksCol = db.collection('tasks');
+    tasksCol.orderBy('createdAt', 'asc').limit(200).onSnapshot(snap => {
+      liveTasks = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      renderTasks();
+    }, () => {});
+
+    db.doc('digest/latest').onSnapshot(snap => {
+      const d = snap.exists ? snap.data() : {};
+      renderTimeline(d.timeline || []);
+      renderInbox(d.inbox || [], d.noise || '');
+      renderCalendar(d.calendarToday || []);
+      refreshedLine.innerHTML = 'עודכן לאחרונה &mdash; ' + fmtRefreshed(d.refreshedAt);
+    }, () => {
+      renderTimeline([]);
+      renderInbox([]);
+    });
+  });
+})();
+</script>
