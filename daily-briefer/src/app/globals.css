@@ -1,0 +1,367 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   BOLD Daily Briefer — design tokens ported verbatim from the Artifact
+   (daily-briefer-source.html). Warm parchment neutral + deep teal accent, with
+   semantic colours kept separate from the accent and a dedicated tone for each
+   check-in tile. Light and dark are both first-class.
+   ───────────────────────────────────────────────────────────────────────────*/
+
+:root {
+  --bg: #F2F1EC;
+  --surface: #FFFFFF;
+  --surface-sunken: #EAE8E1;
+  --ink: #201D1A;
+  --ink-soft: #5B564F;
+  --ink-faint: #8B857A;
+  --line: #DAD6CC;
+  --accent: #2B5D63;
+  --accent-soft: #DCE7E6;
+  --good: #3F7D4F;
+  --good-soft: #E2EFE2;
+  --warn: #A8752A;
+  --warn-soft: #F5EBD8;
+  --critical: #AC3B34;
+  --critical-soft: #F7E1DE;
+  --water: #3E7C9E;
+  --water-soft: #DCEAF1;
+  --pill: #7A5A8C;
+  --pill-soft: #EBE1F0;
+  --teeth: #3E7C7A;
+  --teeth-soft: #DCEEEC;
+  --clean: #4C8C5C;
+  --clean-soft: #E4F1E6;
+  --shadow: 0 1px 2px rgba(32, 29, 26, 0.06), 0 8px 24px -12px rgba(32, 29, 26, 0.18);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17181A; --surface: #1F2124; --surface-sunken: #26282B;
+    --ink: #EDEBE6; --ink-soft: #B3AEA3; --ink-faint: #7D7A72; --line: #34373A;
+    --accent: #7CBFC3; --accent-soft: #233234;
+    --good: #7AC488; --good-soft: #1F2E23;
+    --warn: #E3B563; --warn-soft: #332A1B;
+    --critical: #E37D77; --critical-soft: #332321;
+    --water: #7FB6D9; --water-soft: #1E2C36;
+    --pill: #C9A6DC; --pill-soft: #2C2433;
+    --teeth: #7FC7C3; --teeth-soft: #1C2C2A;
+    --clean: #8FCC9E; --clean-soft: #1E2E21;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #17181A; --surface: #1F2124; --surface-sunken: #26282B;
+  --ink: #EDEBE6; --ink-soft: #B3AEA3; --ink-faint: #7D7A72; --line: #34373A;
+  --accent: #7CBFC3; --accent-soft: #233234;
+  --good: #7AC488; --good-soft: #1F2E23;
+  --warn: #E3B563; --warn-soft: #332A1B;
+  --critical: #E37D77; --critical-soft: #332321;
+  --water: #7FB6D9; --water-soft: #1E2C36;
+  --pill: #C9A6DC; --pill-soft: #2C2433;
+  --teeth: #7FC7C3; --teeth-soft: #1C2C2A;
+  --clean: #8FCC9E; --clean-soft: #1E2E21;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--bg); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  direction: rtl;
+  font-family: var(--font-body), "Rubik", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* Room for the iOS home-indicator when installed to the home screen. */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.wrap { max-width: 1160px; margin: 0 auto; padding: 36px 24px 64px; }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+input { direction: rtl; }
+a { color: var(--accent); }
+
+/* ---- Masthead ---- */
+.masthead {
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+  padding-bottom: 20px; margin-bottom: 24px; border-bottom: 2px solid var(--ink);
+  flex-wrap: wrap;
+}
+.masthead h1 {
+  font-family: var(--font-display), "Frank Ruhl Libre", system-ui, serif;
+  font-weight: 800; font-size: clamp(1.9rem, 4.6vw, 2.7rem); line-height: 1.15;
+  margin: 0; text-wrap: balance;
+}
+.masthead .sub { font-size: 0.95rem; color: var(--ink-soft); margin-top: 6px; max-width: 50ch; }
+.meta {
+  text-align: end; font-family: var(--font-mono), "IBM Plex Mono", monospace; font-size: 0.76rem;
+  color: var(--ink-faint); line-height: 1.7; white-space: nowrap; direction: ltr;
+}
+.meta .dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--good); margin-inline-end: 6px;
+}
+.meta .dot.off { background: var(--ink-faint); }
+.meta-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; direction: rtl; }
+
+.ghost-btn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft);
+  font-size: 0.72rem; font-weight: 600; padding: 5px 10px; border-radius: 99px;
+  cursor: pointer; white-space: nowrap; transition: border-color 0.15s ease, color 0.15s ease;
+}
+.ghost-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.ghost-btn:disabled { opacity: 0.5; cursor: default; }
+.ghost-btn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+/* ---- Check-in strip ---- */
+.checkin-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px; margin-bottom: 22px;
+}
+.check-card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: var(--shadow); padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+}
+.check-icon {
+  width: 42px; height: 42px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.check-icon svg { width: 21px; height: 21px; }
+.check-body { flex: 1; min-width: 0; }
+.check-label {
+  font-family: var(--font-display), "Frank Ruhl Libre", system-ui, serif;
+  font-weight: 700; font-size: 1.12rem; margin: 0 0 2px;
+}
+.check-sub { font-size: 0.78rem; color: var(--ink-faint); margin: 0; }
+
+.pill-btn {
+  border: 1.5px solid var(--line); background: var(--surface-sunken); color: var(--ink-soft);
+  font-weight: 600; font-size: 0.8rem; padding: 8px 14px; border-radius: 99px;
+  cursor: pointer; transition: all 0.15s ease; white-space: nowrap;
+}
+.pill-btn:hover { border-color: var(--pill); }
+.pill-btn.done { background: var(--pill-soft); border-color: var(--pill); color: var(--pill); }
+
+.teeth-toggles { display: flex; gap: 6px; }
+.teeth-btn {
+  border: 1.5px solid var(--line); background: var(--surface-sunken); color: var(--ink-soft);
+  font-weight: 600; font-size: 0.76rem; padding: 7px 11px; border-radius: 99px; cursor: pointer;
+}
+.teeth-btn.done { background: var(--teeth-soft); border-color: var(--teeth); color: var(--teeth); }
+
+.clean-btn {
+  border: 1.5px solid var(--line); background: var(--surface-sunken); color: var(--ink-soft);
+  font-weight: 600; font-size: 0.8rem; padding: 8px 14px; border-radius: 99px;
+  cursor: pointer; white-space: nowrap;
+}
+.clean-btn.done { background: var(--clean-soft); border-color: var(--clean); color: var(--clean); }
+
+.check-card.wrapping { flex-wrap: wrap; row-gap: 8px; }
+.check-card.wrapping .water-widget { margin-inline-start: auto; }
+
+.water-widget { display: flex; align-items: center; gap: 3px; }
+.drop-btn {
+  width: 24px; height: 24px; border: none; background: none; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center; border-radius: 6px;
+}
+.drop-btn:hover { background: var(--water-soft); }
+.drop-btn svg { width: 19px; height: 19px; }
+
+/* ---- Layout ---- */
+.grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; }
+@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+.col { display: flex; flex-direction: column; gap: 22px; }
+
+.panel {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.panel-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding: 16px 20px 12px; border-bottom: 1px solid var(--line);
+}
+.panel-head h2 {
+  font-family: var(--font-display), "Frank Ruhl Libre", system-ui, serif;
+  font-weight: 700; font-size: 1.28rem; margin: 0;
+}
+.panel-head .count {
+  font-family: var(--font-mono), "IBM Plex Mono", monospace; font-size: 0.72rem;
+  color: var(--ink-faint); direction: ltr;
+}
+
+/* ---- Calendar mini ---- */
+.cal-mini { padding: 6px 20px 16px; }
+.cal-row {
+  display: flex; align-items: baseline; gap: 10px; padding: 7px 0;
+  border-bottom: 1px solid var(--line); font-size: 0.88rem;
+}
+.cal-row:last-child { border-bottom: none; }
+.cal-time {
+  font-family: var(--font-mono), "IBM Plex Mono", monospace; font-size: 0.76rem;
+  color: var(--accent); direction: ltr; white-space: nowrap;
+}
+.cal-empty { font-size: 0.85rem; color: var(--ink-faint); padding: 4px 0; line-height: 1.6; }
+.cal-row > span:last-child { unicode-bidi: plaintext; text-align: start; }
+.cal-daybreak {
+  font-size: 0.7rem; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.04em;
+  padding: 12px 0 2px; border-bottom: 1px solid var(--line);
+}
+
+/* ---- Missions ---- */
+.missions { padding: 8px 20px 16px; }
+.mission-group h3 {
+  font-family: var(--font-display), "Frank Ruhl Libre", system-ui, serif;
+  font-size: 0.92rem; font-weight: 700; color: var(--ink-soft); margin: 10px 0 4px;
+}
+.mission-group:first-child h3 { margin-top: 0; }
+.task-row {
+  display: flex; align-items: flex-start; gap: 10px; padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+}
+.task-row:last-child { border-bottom: none; }
+.task-check {
+  width: 19px; height: 19px; border-radius: 5px; border: 1.5px solid var(--line);
+  background: var(--surface); flex-shrink: 0; margin-top: 2px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; padding: 0;
+}
+.task-check.checked { background: var(--accent); border-color: var(--accent); }
+.task-check svg { width: 12px; height: 12px; opacity: 0; }
+.task-check.checked svg { opacity: 1; }
+.task-text {
+  flex: 1; font-size: 0.9rem; line-height: 1.45; padding-top: 1px;
+  unicode-bidi: plaintext; text-align: start; overflow-wrap: anywhere;
+}
+.task-text.checked { color: var(--ink-faint); text-decoration: line-through; }
+.task-src {
+  font-size: 0.6rem; color: var(--ink-faint); background: var(--surface-sunken);
+  padding: 2px 6px; border-radius: 5px; margin-inline-start: 6px;
+  white-space: nowrap; vertical-align: middle;
+}
+.task-del {
+  background: none; border: none; color: var(--ink-faint); cursor: pointer;
+  font-size: 1rem; padding: 0 4px; flex-shrink: 0; line-height: 1;
+}
+.task-del:hover { color: var(--critical); }
+.task-add { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.task-add input {
+  flex: 1; min-width: 140px; border: 1px solid var(--line); background: var(--surface-sunken);
+  color: var(--ink); border-radius: 7px; padding: 8px 12px; font-size: 0.87rem;
+  font-family: inherit;
+}
+.task-add-btns { display: flex; gap: 6px; }
+.task-add button {
+  border: none; background: var(--accent); color: var(--surface); font-weight: 600;
+  font-size: 0.8rem; padding: 8px 12px; border-radius: 7px; cursor: pointer; white-space: nowrap;
+}
+.task-add button.alt {
+  background: var(--surface-sunken); color: var(--ink-soft); border: 1px solid var(--line);
+}
+.task-add button:disabled { opacity: 0.45; cursor: default; }
+.task-empty { font-size: 0.85rem; color: var(--ink-faint); padding: 6px 0; }
+
+/* ---- Timeline ---- */
+.timeline { padding: 4px 20px 14px; }
+.titem {
+  display: grid; grid-template-columns: 1fr 58px; gap: 14px; padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.titem:last-child { border-bottom: none; }
+.tdays {
+  font-family: var(--font-mono), "IBM Plex Mono", monospace; text-align: center;
+  padding-top: 2px; direction: ltr;
+}
+.tdays .n { display: block; font-size: 1.3rem; font-weight: 600; line-height: 1; }
+.tdays .u { display: block; font-size: 0.56rem; color: var(--ink-faint); margin-top: 3px; }
+.tbody h3 {
+  font-size: 0.98rem; margin: 0 0 3px; font-weight: 600; text-wrap: balance;
+  unicode-bidi: plaintext; text-align: start;
+}
+.tbody .when {
+  font-family: var(--font-mono), "IBM Plex Mono", monospace; font-size: 0.7rem;
+  color: var(--ink-faint); margin-bottom: 5px; direction: ltr; unicode-bidi: plaintext;
+}
+.tbody p {
+  margin: 0; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.55;
+  unicode-bidi: plaintext; text-align: start;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 0.66rem;
+  font-weight: 600; padding: 3px 9px; border-radius: 99px; margin-bottom: 5px;
+}
+.chip.urgent { background: var(--critical-soft); color: var(--critical); }
+.chip.soon { background: var(--warn-soft); color: var(--warn); }
+.chip.track { background: var(--good-soft); color: var(--good); }
+.chip.watch { background: var(--accent-soft); color: var(--accent); }
+
+/* ---- Inbox ---- */
+.inbox { padding: 4px 20px 14px; }
+.iitem { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.iitem:last-child { border-bottom: none; }
+.irow { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.irow .who { font-weight: 600; font-size: 0.92rem; unicode-bidi: plaintext; min-width: 0; overflow-wrap: anywhere; }
+.irow .age {
+  font-family: var(--font-mono), "IBM Plex Mono", monospace; font-size: 0.66rem;
+  color: var(--ink-faint); white-space: nowrap; direction: ltr;
+}
+.isubject {
+  font-size: 0.8rem; color: var(--ink-faint); margin: 2px 0 5px; font-style: italic;
+  unicode-bidi: plaintext; text-align: start; overflow-wrap: anywhere;
+}
+.isubject a { color: inherit; text-decoration: none; }
+.isubject a:hover { text-decoration: underline; }
+.iask {
+  font-size: 0.85rem; color: var(--ink-soft); line-height: 1.55; margin: 0;
+  unicode-bidi: plaintext; text-align: start; overflow-wrap: anywhere;
+}
+.iask b { color: var(--ink); font-weight: 600; }
+.iflag { color: var(--critical); font-weight: 600; }
+.noise {
+  margin-top: 2px; padding: 12px 20px 14px; font-size: 0.8rem; color: var(--ink-faint);
+  border-top: 1px dashed var(--line); line-height: 1.6;
+}
+
+/* ---- Footnote / status ---- */
+.footnote {
+  margin-top: 22px; padding: 16px 20px; background: var(--surface-sunken);
+  border: 1px dashed var(--line); border-radius: 10px; font-size: 0.82rem;
+  color: var(--ink-soft); line-height: 1.7;
+}
+.footnote b { color: var(--ink); }
+.sync-note { font-size: 0.72rem; color: var(--ink-faint); text-align: center; margin-top: 14px; }
+
+.notice {
+  margin-bottom: 22px; padding: 14px 18px; border-radius: 10px;
+  background: var(--warn-soft); border: 1px solid var(--warn); color: var(--ink);
+  font-size: 0.86rem; line-height: 1.6;
+  display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: space-between;
+}
+.notice a, .notice button { font-weight: 600; }
+
+/* ---- Login ---- */
+.login-shell {
+  min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.login-card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: var(--shadow); padding: 36px 32px; max-width: 420px; width: 100%; text-align: center;
+}
+.login-card h1 {
+  font-family: var(--font-display), "Frank Ruhl Libre", system-ui, serif;
+  font-size: 1.9rem; margin: 0 0 8px;
+}
+.login-card p { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.65; margin: 0 0 24px; }
+.login-btn {
+  width: 100%; border: 1px solid var(--line); background: var(--surface-sunken); color: var(--ink);
+  font-weight: 600; font-size: 0.95rem; padding: 13px 18px; border-radius: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.login-btn:hover { border-color: var(--accent); }
+.login-error {
+  background: var(--critical-soft); color: var(--critical); border-radius: 8px;
+  padding: 10px 14px; font-size: 0.83rem; margin-bottom: 18px; line-height: 1.6;
+}
